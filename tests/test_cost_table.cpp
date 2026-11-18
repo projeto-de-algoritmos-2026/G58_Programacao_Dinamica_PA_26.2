@@ -19,3 +19,12 @@ TEST(CostTable, CadaCelulaGuardaOProprioValor) {
         }
     }
 }
+
+TEST(CostTable, AtConstLeOQueFoiGravado) {
+    CostTable table(1, 1);
+    table.at(1, 1) = 7;
+
+    const CostTable& readOnly = table;
+
+    EXPECT_EQ(readOnly.at(1, 1), 7);
+}
