@@ -24,6 +24,8 @@ add_executable(version_tests
         test_patience_differ.cpp
         test_version_history.cpp
         test_folder_store.cpp
+
+        StringProblem.hpp
 )
 
 target_compile_definitions(version_tests PRIVATE EXEMPLOS_DIR="${PROJECT_SOURCE_DIR}/exemplos")
