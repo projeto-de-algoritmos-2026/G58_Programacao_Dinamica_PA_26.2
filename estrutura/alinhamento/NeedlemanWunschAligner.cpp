@@ -5,11 +5,17 @@
 namespace estrutura::alinhamento {
 
 Alignment NeedlemanWunschAligner::align(const IAlignmentProblem& problem) const {
-	notImplemented("NeedlemanWunschAligner::align", problem);
+
+	const CostTable costTable = fillTable(problem);
+
+	Alignment alignment;
+	alignment.cost = costTable.at(problem.lengthX(), problem.lengthY());
+
+	return alignment;
 }
 
 CostTable NeedlemanWunschAligner::fillTable(const IAlignmentProblem& problem) {
-	notImplemented("NeedlemanWunschAligner::fillTable", problem);
+	return {problem.lengthX(), problem.lengthY()};
 }
 
 std::vector<AlignmentColumn> NeedlemanWunschAligner::traceback(const IAlignmentProblem& problem, const CostTable& costTable) {
