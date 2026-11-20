@@ -77,7 +77,7 @@ Os diagramas foram feitos no Astah. O projeto fica em [`docs/astah/`](docs/astah
 
 As classes dos quatro pacotes (`terminal`, `nucleo`, `adaptadores` e `alinhamento`), com atributos, métodos e relações. As interfaces estão em cinza, as structs em verde, o enum `EditKind` em roxo e os utilitários (`TextSplitter`, `LinearSpaceCost` e `LongestIncreasingSubsequence`) em azul. O diagrama inclui as classes dos extras: o histórico de versões, o patience diff e o Hirschberg.
 
-[![Diagrama de classes](docs/diagramas/class-v4-pa-t4.svg)](docs/diagramas/class-v4-pa-t4.svg)
+[![Diagrama de classes](docs/diagramas/classes.svg)](docs/diagramas/classes.svg)
 
 ### Diagrama de componentes
 
@@ -85,11 +85,29 @@ As classes dos quatro pacotes (`terminal`, `nucleo`, `adaptadores` e `alinhament
 
 ### Diagramas de sequência
 
+#### SEQ1 - Inicialização
+
+[![Diagrama de sequências: inicialização](docs/diagramas/seq1-inicializacao.svg)](docs/diagramas/seq1-inicializacao.svg)
+
+#### SEQ2 - AlignmentDiffer.diff(before, after)
+
+[![Diagrama de sequências: diff](docs/diagramas/seq2-diff.svg)](docs/diagramas/seq2-diff.svg)
+
+#### SEQ3 - TerminalUI.run()
+
+[![Diagrama de sequências: terminal](docs/diagramas/seq3-terminal.svg)](docs/diagramas/seq3-terminal.svg)
+
 (adicionar)
 
 ### Diagramas de atividades
 
-(adicionar)
+#### ATV1 - NeedlemanWunschAligner.fillTable(problem)
+
+[![Diagrama de atividades: filltable](docs/diagramas/atv1-filltable.svg)](docs/diagramas/atv1-filltable.svg)
+
+#### ATV2 - NeedlemanWunschAligner.traceback(problem, costTable)
+
+[![Diagrama de atividades: traceback](docs/diagramas/atv2-traceback.svg)](docs/diagramas/atv2-traceback.svg)
 
 ## Experimentos e comparação
 
