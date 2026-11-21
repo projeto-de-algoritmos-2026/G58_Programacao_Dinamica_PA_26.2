@@ -67,3 +67,12 @@ TEST(NeedlemanWunschAligner, SequenciasIguaisCustamZero) {
 
     EXPECT_EQ(result.cost, 0);
 }
+
+TEST(NeedlemanWunschAligner, OcurranceContraOccurrenceCusta2) {
+    const StringProblem problem("ocurrance", "occurrence");
+    const NeedlemanWunschAligner aligner;
+
+    const Alignment result = aligner.align(problem);
+
+    EXPECT_EQ(result.cost, 2);
+}
