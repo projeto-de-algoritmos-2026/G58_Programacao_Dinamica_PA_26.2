@@ -97,12 +97,33 @@ TEST(NeedlemanWunschAligner, ABCContraABXCCusta1) {
 }
 
 TEST(NeedlemanWunschAligner, SequenciasIguaisCustamZero) {
+
+    AlignmentColumn colunaAlinhamentoA;
+    colunaAlinhamentoA.xIndex = 0;
+    colunaAlinhamentoA.yIndex = 0;
+
+    AlignmentColumn colunaAlinhamentoB;
+    colunaAlinhamentoB.xIndex = 1;
+    colunaAlinhamentoB.yIndex = 1;
+
+    AlignmentColumn colunaAlinhamentoC;
+    colunaAlinhamentoC.xIndex = 2;
+    colunaAlinhamentoC.yIndex = 2;
+
+    std::vector<AlignmentColumn> colunasEsperadas =  {
+        colunaAlinhamentoA,
+        colunaAlinhamentoB,
+        colunaAlinhamentoC
+    };
+
     const StringProblem problem("abc", "abc");
+
     const NeedlemanWunschAligner aligner;
 
     const Alignment result = aligner.align(problem);
 
     EXPECT_EQ(result.cost, 0);
+    EXPECT_EQ(result.columns, colunasEsperadas);
 }
 
 TEST(NeedlemanWunschAligner, OcurranceContraOccurrenceCusta2) {
