@@ -85,3 +85,12 @@ TEST(NeedlemanWunschAligner, KittenContraSittingCusta3) {
 
     EXPECT_EQ(result.cost, 3);
 }
+
+TEST(NeedlemanWunschAligner, AContraBAlpha5Delta1Custa2) {
+    const StringProblem problem("a", "b", 5, 1);
+    const NeedlemanWunschAligner aligner;
+
+    const Alignment result = aligner.align(problem);
+
+    EXPECT_EQ(result.cost, 2);
+}
