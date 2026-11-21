@@ -58,3 +58,12 @@ TEST(NeedlemanWunschAligner, ABCContraABXCCusta1) {
 
     EXPECT_EQ(result.cost, 1);
 }
+
+TEST(NeedlemanWunschAligner, SequenciasIguaisCustamZero) {
+    const StringProblem problem("abc", "abc");
+    const NeedlemanWunschAligner aligner;
+
+    const Alignment result = aligner.align(problem);
+
+    EXPECT_EQ(result.cost, 0);
+}
