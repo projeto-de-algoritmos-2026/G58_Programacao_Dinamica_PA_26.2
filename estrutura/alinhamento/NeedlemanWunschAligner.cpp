@@ -2,6 +2,8 @@
 
 #include "estrutura/NotImplemented.hpp"
 
+#include <algorithm>
+
 namespace estrutura::alinhamento {
 
 Alignment NeedlemanWunschAligner::align(const IAlignmentProblem& problem) const {
