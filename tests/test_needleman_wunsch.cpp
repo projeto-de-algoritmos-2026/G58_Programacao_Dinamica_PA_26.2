@@ -22,3 +22,21 @@ TEST(NeedlemanWunschAligner, VazioContraVazioCustaZero) {
     EXPECT_TRUE(result.columns.empty());
 
 }
+
+TEST(NeedlemanWunschAligner, VazioContraABCCusta3) {
+    const StringProblem problem("", "abc");
+    const NeedlemanWunschAligner aligner;
+
+    const Alignment result = aligner.align(problem);
+
+    EXPECT_EQ(result.cost, 3);
+}
+
+TEST(NeedlemanWunschAligner, ABCContraVazioCusta3) {
+    const StringProblem problem("abc", "");
+    const NeedlemanWunschAligner aligner;
+
+    const Alignment result = aligner.align(problem);
+
+    EXPECT_EQ(result.cost, 3);
+}
