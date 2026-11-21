@@ -76,3 +76,12 @@ TEST(NeedlemanWunschAligner, OcurranceContraOccurrenceCusta2) {
 
     EXPECT_EQ(result.cost, 2);
 }
+
+TEST(NeedlemanWunschAligner, KittenContraSittingCusta3) {
+    const StringProblem problem("kitten", "sitting");
+    const NeedlemanWunschAligner aligner;
+
+    const Alignment result = aligner.align(problem);
+
+    EXPECT_EQ(result.cost, 3);
+}
