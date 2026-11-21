@@ -23,22 +23,59 @@ TEST(NeedlemanWunschAligner, VazioContraVazioCustaZero) {
 
 }
 
+
 TEST(NeedlemanWunschAligner, VazioContraABCCusta3) {
+
+    AlignmentColumn colunaAlinhamentoA;
+    colunaAlinhamentoA.yIndex = 0;
+
+    AlignmentColumn colunaAlinhamentoB;
+    colunaAlinhamentoB.yIndex = 1;
+
+    AlignmentColumn colunaAlinhamentoC;
+    colunaAlinhamentoC.yIndex = 2;
+
+    std::vector<AlignmentColumn> colunasEsperadas =  {
+        colunaAlinhamentoA,
+        colunaAlinhamentoB,
+        colunaAlinhamentoC
+    };
+
     const StringProblem problem("", "abc");
+
     const NeedlemanWunschAligner aligner;
 
     const Alignment result = aligner.align(problem);
 
     EXPECT_EQ(result.cost, 3);
+    EXPECT_EQ(result.columns, colunasEsperadas);
 }
 
 TEST(NeedlemanWunschAligner, ABCContraVazioCusta3) {
+
+    AlignmentColumn colunaAlinhamentoA;
+    colunaAlinhamentoA.xIndex = 0;
+
+    AlignmentColumn colunaAlinhamentoB;
+    colunaAlinhamentoB.xIndex = 1;
+
+    AlignmentColumn colunaAlinhamentoC;
+    colunaAlinhamentoC.xIndex = 2;
+
+    std::vector<AlignmentColumn> colunasEsperadas =  {
+        colunaAlinhamentoA,
+        colunaAlinhamentoB,
+        colunaAlinhamentoC
+    };
+
     const StringProblem problem("abc", "");
+
     const NeedlemanWunschAligner aligner;
 
     const Alignment result = aligner.align(problem);
 
     EXPECT_EQ(result.cost, 3);
+    EXPECT_EQ(result.columns, colunasEsperadas);
 }
 
 TEST(NeedlemanWunschAligner, ABCContraABDCusta1) {
