@@ -29,6 +29,15 @@ CostTable NeedlemanWunschAligner::fillTable(const IAlignmentProblem& problem) {
 		costTable.at(0, yPrefixLength) = costTable.at(0, yPrefixLength -1) + problem.unmatchedYCost(yPrefixLength -1);
 	}
 
+	for (int xPrefixLength = 1; xPrefixLength <= lengthX; xPrefixLength++) {
+		for (int yPrefixLength = 1; yPrefixLength <= lengthY; yPrefixLength++) {
+			int pairedCost = costTable.at(xPrefixLength - 1, yPrefixLength - 1) + problem.pairCost(xPrefixLength - 1, yPrefixLength - 1);
+			int xUnmatchedCost = costTable.at(xPrefixLength - 1, yPrefixLength) + problem.unmatchedXCost(xPrefixLength - 1);
+			int yUnmatchedCost = costTable.at(xPrefixLength, yPrefixLength - 1) + problem.unmatchedYCost(yPrefixLength - 1);
+			costTable.at(xPrefixLength, yPrefixLength) = std::min({pairedCost, xUnmatchedCost, yUnmatchedCost});
+		}
+	}
+
 	return costTable;
 }
 
