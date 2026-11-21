@@ -40,3 +40,12 @@ TEST(NeedlemanWunschAligner, ABCContraVazioCusta3) {
 
     EXPECT_EQ(result.cost, 3);
 }
+
+TEST(NeedlemanWunschAligner, ABCContraABDCusta1) {
+    const StringProblem problem("abc", "abd");
+    const NeedlemanWunschAligner aligner;
+
+    const Alignment result = aligner.align(problem);
+
+    EXPECT_EQ(result.cost, 1);
+}
