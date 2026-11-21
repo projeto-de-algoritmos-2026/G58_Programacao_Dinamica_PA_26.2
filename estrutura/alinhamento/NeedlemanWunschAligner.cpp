@@ -24,18 +24,18 @@ CostTable NeedlemanWunschAligner::fillTable(const IAlignmentProblem& problem) {
 	CostTable costTable(lengthX, lengthY);
 
 	for (int xPrefixLength = 1; xPrefixLength <= lengthX; xPrefixLength++) {
-		costTable.at(xPrefixLength, 0) = costTable.at(xPrefixLength -1, 0) + problem.unmatchedXCost(xPrefixLength -1);
+		costTable.at(xPrefixLength, 0) = costTable.at(xPrefixLength - 1, 0) + problem.unmatchedXCost(xPrefixLength - 1);
 	}
 
 	for (int yPrefixLength = 1; yPrefixLength <= lengthY; yPrefixLength++) {
-		costTable.at(0, yPrefixLength) = costTable.at(0, yPrefixLength -1) + problem.unmatchedYCost(yPrefixLength -1);
+		costTable.at(0, yPrefixLength) = costTable.at(0, yPrefixLength - 1) + problem.unmatchedYCost(yPrefixLength - 1);
 	}
 
 	for (int xPrefixLength = 1; xPrefixLength <= lengthX; xPrefixLength++) {
 		for (int yPrefixLength = 1; yPrefixLength <= lengthY; yPrefixLength++) {
-			int pairedCost = costTable.at(xPrefixLength - 1, yPrefixLength - 1) + problem.pairCost(xPrefixLength - 1, yPrefixLength - 1);
-			int xUnmatchedCost = costTable.at(xPrefixLength - 1, yPrefixLength) + problem.unmatchedXCost(xPrefixLength - 1);
-			int yUnmatchedCost = costTable.at(xPrefixLength, yPrefixLength - 1) + problem.unmatchedYCost(yPrefixLength - 1);
+			const int pairedCost = costTable.at(xPrefixLength - 1, yPrefixLength - 1) + problem.pairCost(xPrefixLength - 1, yPrefixLength - 1);
+			const int xUnmatchedCost = costTable.at(xPrefixLength - 1, yPrefixLength) + problem.unmatchedXCost(xPrefixLength - 1);
+			const int yUnmatchedCost = costTable.at(xPrefixLength, yPrefixLength - 1) + problem.unmatchedYCost(yPrefixLength - 1);
 			costTable.at(xPrefixLength, yPrefixLength) = std::min({pairedCost, xUnmatchedCost, yUnmatchedCost});
 		}
 	}
