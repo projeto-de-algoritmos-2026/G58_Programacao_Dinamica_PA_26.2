@@ -19,6 +19,16 @@ namespace estrutura::alinhamento {
 		                     const int yPrefixLength) {
 			return costTable.at(xPrefixLength, yPrefixLength - 1) + problem.unmatchedYCost(yPrefixLength - 1);
 		}
+
+		bool cameFromPair(const IAlignmentProblem& problem, const CostTable& costTable, const int xPrefixLength, const int yPrefixLength) {
+			return xPrefixLength > 0 && yPrefixLength > 0 && costTable.at(xPrefixLength, yPrefixLength) == costIfPaired(
+					   problem, costTable, xPrefixLength, yPrefixLength);
+		}
+
+		bool cameFromXUnmatched(const IAlignmentProblem& problem, const CostTable& costTable, const int xPrefixLength, const int yPrefixLength) {
+			return xPrefixLength > 0 && costTable.at(xPrefixLength, yPrefixLength) == costIfXUnmatched(
+					   problem, costTable, xPrefixLength, yPrefixLength);
+		}
 	}
 
 Alignment NeedlemanWunschAligner::align(const IAlignmentProblem& problem) const {
@@ -69,11 +79,11 @@ std::vector<AlignmentColumn> NeedlemanWunschAligner::traceback(const IAlignmentP
 	std::vector<AlignmentColumn> columns;
 
 	while (xPrefixLength > 0 || yPrefixLength > 0) {
-		if (xPrefixLength > 0 && yPrefixLength > 0 && costTable.at(xPrefixLength, yPrefixLength) == costIfPaired(problem, costTable, xPrefixLength, yPrefixLength)) {
+		if (cameFromPair(problem, costTable, xPrefixLength, yPrefixLength)) {
 			columns.push_back({xPrefixLength - 1, yPrefixLength - 1});
 			xPrefixLength--;
 			yPrefixLength--;
-		} else if (xPrefixLength > 0 && costTable.at(xPrefixLength, yPrefixLength) == costIfXUnmatched(problem, costTable, xPrefixLength, yPrefixLength)) {
+		} else if (cameFromXUnmatched(problem, costTable, xPrefixLength, yPrefixLength)) {
 			columns.push_back({xPrefixLength - 1, std::nullopt});
 			xPrefixLength--;
 		} else {
