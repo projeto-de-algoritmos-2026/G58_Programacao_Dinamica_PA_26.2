@@ -26,6 +26,8 @@ add_executable(version_tests
         test_folder_store.cpp
 
         StringProblem.hpp
+        AlignmentOracle.hpp
+        RandomProblem.hpp
 )
 
 target_compile_definitions(version_tests PRIVATE EXEMPLOS_DIR="${PROJECT_SOURCE_DIR}/exemplos")

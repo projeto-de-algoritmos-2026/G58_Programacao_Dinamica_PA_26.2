@@ -1,3 +1,4 @@
+#include <string>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -6,6 +7,7 @@
 #include "estrutura/alinhamento/AlignmentColumn.hpp"
 #include "estrutura/alinhamento/NeedlemanWunschAligner.hpp"
 
+#include "AlignmentOracle.hpp"
 #include "StringProblem.hpp"
 
 using estrutura::alinhamento::Alignment;
@@ -189,4 +191,29 @@ TEST(NeedlemanWunschAligner, AContraBAlpha5Delta1Custa2) {
 
     EXPECT_EQ(result.cost, 2);
     EXPECT_EQ(result.columns, colunasEsperadas);
+}
+
+TEST(NeedlemanWunschAligner, ExemplosTemColunasValidasECustoRecalculadoIgual) {
+    const std::vector<StringProblem> problems = {
+        StringProblem("", ""),
+        StringProblem("", "abc"),
+        StringProblem("abc", ""),
+        StringProblem("abc", "abd"),
+        StringProblem("abc", "abxc"),
+        StringProblem("abc", "abc"),
+        StringProblem("ocurrance", "occurrence"),
+        StringProblem("kitten", "sitting"),
+        StringProblem("a", "b", 5, 1),
+    };
+    const NeedlemanWunschAligner aligner;
+
+    for (std::size_t exemplo = 0; exemplo < problems.size(); ++exemplo) {
+        SCOPED_TRACE("exemplo " + std::to_string(exemplo));
+        const StringProblem& problem = problems[exemplo];
+
+        const Alignment result = aligner.align(problem);
+
+        ASSERT_TRUE(oraculo::isValid(problem, result.columns));
+        EXPECT_EQ(oraculo::recomputedCost(problem, result.columns), result.cost);
+    }
 }
