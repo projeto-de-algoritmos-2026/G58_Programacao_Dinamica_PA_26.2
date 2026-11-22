@@ -170,10 +170,23 @@ TEST(NeedlemanWunschAligner, KittenContraSittingCusta3) {
 }
 
 TEST(NeedlemanWunschAligner, AContraBAlpha5Delta1Custa2) {
+
+    AlignmentColumn colunaAlinhamentoA;
+    colunaAlinhamentoA.yIndex = 0;
+
+    AlignmentColumn colunaAlinhamentoB;
+    colunaAlinhamentoB.xIndex = 0;
+
+    std::vector<AlignmentColumn> colunasEsperadas =  {
+        colunaAlinhamentoA,
+        colunaAlinhamentoB
+    };
+
     const StringProblem problem("a", "b", 5, 1);
     const NeedlemanWunschAligner aligner;
 
     const Alignment result = aligner.align(problem);
 
     EXPECT_EQ(result.cost, 2);
+    EXPECT_EQ(result.columns, colunasEsperadas);
 }
