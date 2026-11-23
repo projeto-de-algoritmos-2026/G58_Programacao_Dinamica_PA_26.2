@@ -22,3 +22,12 @@ TEST(TextSplitter, DuasLinhasSemQuebraNoFim) {
 
     EXPECT_EQ(resultado, esperado);
 }
+
+TEST(TextSplitter, QuebraNoFimNaoCriaLinhaVazia) {
+
+    const std::vector<std::string> resultado = TextSplitter::lines("a\nb\n");
+
+    const std::vector<std::string> esperado = {"a", "b"};
+
+    EXPECT_EQ(resultado, esperado);
+}
