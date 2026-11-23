@@ -60,3 +60,16 @@ TEST(TokenAlignmentProblem, ForLinesUsaTresParaTrocaEUmParaLacuna) {
     EXPECT_EQ(problem.unmatchedXCost(0), 1);
     EXPECT_EQ(problem.unmatchedYCost(0), 1);
 }
+
+TEST(TokenAlignmentProblem, ForWordsUsaUmParaTrocaEUmParaLacuna) {
+
+    const std::vector<std::string> antes = {"a", "b"};
+    const std::vector<std::string> depois = {"a", "c", "d"};
+
+    const TokenAlignmentProblem problem = TokenAlignmentProblem::forWords(antes, depois);
+
+    EXPECT_EQ(problem.pairCost(0, 0), 0);
+    EXPECT_EQ(problem.pairCost(1, 1), 1);
+    EXPECT_EQ(problem.unmatchedXCost(0), 1);
+    EXPECT_EQ(problem.unmatchedYCost(0), 1);
+}
