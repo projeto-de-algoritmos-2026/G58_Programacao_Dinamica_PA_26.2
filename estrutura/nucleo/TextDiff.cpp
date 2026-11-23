@@ -1,7 +1,5 @@
 #include "TextDiff.hpp"
 
-#include "estrutura/NotImplemented.hpp"
-
 #include <algorithm>
 
 namespace estrutura::nucleo {
@@ -15,7 +13,11 @@ int TextDiff::count(const EditKind kind) const {
 }
 
 bool TextDiff::isIdentical() const {
-	notImplemented("TextDiff::isIdentical");
+
+	return std::all_of(lines.begin(), lines.end(), [] (const LineEdit& line) {
+		return line.kind == EditKind::Kept;
+	});
+
 }
 
 }  // namespace estrutura::nucleo
