@@ -1,7 +1,5 @@
 #include "TokenAlignmentProblem.hpp"
 
-#include "estrutura/NotImplemented.hpp"
-
 namespace estrutura::nucleo {
 
 TokenAlignmentProblem::TokenAlignmentProblem(const std::vector<std::string>& before, const std::vector<std::string>& after, const int mismatchCost, const int unmatchedCost)
@@ -13,7 +11,7 @@ TokenAlignmentProblem TokenAlignmentProblem::forLines(const std::vector<std::str
 }
 
 TokenAlignmentProblem TokenAlignmentProblem::forWords(const std::vector<std::string>& before, const std::vector<std::string>& after) {
-	notImplemented("TokenAlignmentProblem::forWords", before, after);
+	return {before, after, 1, 1};
 }
 
 int TokenAlignmentProblem::lengthX() const { return static_cast<int>(before.size()); }
