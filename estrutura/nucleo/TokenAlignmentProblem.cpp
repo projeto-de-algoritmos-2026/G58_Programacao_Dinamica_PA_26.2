@@ -9,7 +9,7 @@ TokenAlignmentProblem::TokenAlignmentProblem(const std::vector<std::string>& bef
 }
 
 TokenAlignmentProblem TokenAlignmentProblem::forLines(const std::vector<std::string>& before, const std::vector<std::string>& after) {
-	notImplemented("TokenAlignmentProblem::forLines", before, after);
+	return {before, after, 3, 1};
 }
 
 TokenAlignmentProblem TokenAlignmentProblem::forWords(const std::vector<std::string>& before, const std::vector<std::string>& after) {
