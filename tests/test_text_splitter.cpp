@@ -40,3 +40,12 @@ TEST(TextSplitter, LinhaEmBrancoNoMeioMantida) {
 
     EXPECT_EQ(resultado, esperado);
 }
+
+TEST(TextSplitter, QuebraDoWindowsViraQuebraComum) {
+
+    const std::vector<std::string> resultado = TextSplitter::lines("a\r\nb\r\n");
+
+    const std::vector<std::string> esperado = {"a","b"};
+
+    EXPECT_EQ(resultado, esperado);
+}
