@@ -77,3 +77,78 @@ TEST(TextDiff, UmaKeptDuasAdded) {
     EXPECT_EQ(textDiff.count(EditKind::Removed), 0);
 
 }
+
+TEST(TextDiff, SoLinhasKept) {
+
+    LineEdit lineEditA;
+    lineEditA.kind = EditKind::Kept;
+
+    LineEdit lineEditB;
+    lineEditB.kind = EditKind::Kept;
+
+    LineEdit lineEditC;
+    lineEditC.kind = EditKind::Kept;
+
+    TextDiff textDiff;
+    textDiff.lines = {
+        lineEditA,
+        lineEditB,
+        lineEditC
+    };
+
+    EXPECT_TRUE(textDiff.isIdentical());
+
+}
+
+TEST(TextDiff, UmaKeptNoMeioDeDuasAdded) {
+
+    LineEdit lineEditA;
+    lineEditA.kind = EditKind::Added;
+
+    LineEdit lineEditB;
+    lineEditB.kind = EditKind::Kept;
+
+    LineEdit lineEditC;
+    lineEditC.kind = EditKind::Added;
+
+    TextDiff textDiff;
+    textDiff.lines = {
+        lineEditA,
+        lineEditB,
+        lineEditC
+    };
+
+    EXPECT_FALSE(textDiff.isIdentical());
+
+}
+
+TEST(TextDiff, DiffSemNenhumaLinha) {
+
+    TextDiff textDiff;
+    textDiff.lines = { };
+
+    EXPECT_TRUE(textDiff.isIdentical());
+
+}
+
+TEST(TextDiff, UmaAddedNoMeioDeDuasKept) {
+
+    LineEdit lineEditA;
+    lineEditA.kind = EditKind::Kept;
+
+    LineEdit lineEditB;
+    lineEditB.kind = EditKind::Added;
+
+    LineEdit lineEditC;
+    lineEditC.kind = EditKind::Kept;
+
+    TextDiff textDiff;
+    textDiff.lines = {
+        lineEditA,
+        lineEditB,
+        lineEditC
+    };
+
+    EXPECT_FALSE(textDiff.isIdentical());
+
+}
