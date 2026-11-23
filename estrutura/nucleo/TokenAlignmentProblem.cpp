@@ -16,13 +16,9 @@ TokenAlignmentProblem TokenAlignmentProblem::forWords(const std::vector<std::str
 	notImplemented("TokenAlignmentProblem::forWords", before, after);
 }
 
-int TokenAlignmentProblem::lengthX() const {
-	notImplemented("TokenAlignmentProblem::lengthX", before);
-}
+int TokenAlignmentProblem::lengthX() const { return static_cast<int>(before.size()); }
 
-int TokenAlignmentProblem::lengthY() const {
-	notImplemented("TokenAlignmentProblem::lengthY", after);
-}
+int TokenAlignmentProblem::lengthY() const { return static_cast<int>(after.size()); }
 
 int TokenAlignmentProblem::pairCost(const int xIndex, const int yIndex) const {
 	notImplemented("TokenAlignmentProblem::pairCost", xIndex, yIndex, mismatchCost);
