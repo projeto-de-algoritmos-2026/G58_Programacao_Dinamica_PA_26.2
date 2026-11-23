@@ -15,6 +15,9 @@ std::vector<std::string> TextSplitter::lines(const std::string& text) {
 	std::vector<std::string> result;
 
 	while (std::getline(textStream, line)) {
+		if (!line.empty() && line.back() == '\r') {
+			line.pop_back();
+		}
 		result.push_back(line);
 	}
 
