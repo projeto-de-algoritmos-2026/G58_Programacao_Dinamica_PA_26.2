@@ -21,15 +21,11 @@ int TokenAlignmentProblem::lengthX() const { return static_cast<int>(before.size
 int TokenAlignmentProblem::lengthY() const { return static_cast<int>(after.size()); }
 
 int TokenAlignmentProblem::pairCost(const int xIndex, const int yIndex) const {
-	notImplemented("TokenAlignmentProblem::pairCost", xIndex, yIndex, mismatchCost);
+	return before.at(xIndex) == after.at(yIndex) ? 0 : mismatchCost;
 }
 
-int TokenAlignmentProblem::unmatchedXCost(const int xIndex) const {
-	notImplemented("TokenAlignmentProblem::unmatchedXCost", xIndex, unmatchedCost);
-}
+int TokenAlignmentProblem::unmatchedXCost(const int) const { return unmatchedCost; }
 
-int TokenAlignmentProblem::unmatchedYCost(const int yIndex) const {
-	notImplemented("TokenAlignmentProblem::unmatchedYCost", yIndex, unmatchedCost);
-}
+int TokenAlignmentProblem::unmatchedYCost(const int) const { return unmatchedCost; }
 
 }  // namespace estrutura::nucleo
