@@ -53,3 +53,27 @@ TEST(AlignmentColumn, LacunaEmYDiferenteDeIndiceZero) {
 
     EXPECT_FALSE(colunaA == colunaB);
 }
+
+TEST(TextDiff, UmaKeptDuasAdded) {
+
+    LineEdit lineEditA;
+    lineEditA.kind = EditKind::Kept;
+
+    LineEdit lineEditB;
+    lineEditB.kind = EditKind::Added;
+
+    LineEdit lineEditC;
+    lineEditC.kind = EditKind::Added;
+
+    TextDiff textDiff;
+    textDiff.lines = {
+        lineEditA,
+        lineEditB,
+        lineEditC
+    };
+
+    EXPECT_EQ(textDiff.count(EditKind::Kept), 1);
+    EXPECT_EQ(textDiff.count(EditKind::Added), 2);
+    EXPECT_EQ(textDiff.count(EditKind::Removed), 0);
+
+}
