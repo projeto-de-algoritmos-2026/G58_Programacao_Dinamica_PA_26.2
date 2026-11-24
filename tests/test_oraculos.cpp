@@ -9,11 +9,14 @@
 #include "estrutura/alinhamento/AlignmentColumn.hpp"
 #include "estrutura/alinhamento/NeedlemanWunschAligner.hpp"
 #include "estrutura/nucleo/AlignmentDiffer.hpp"
+#include "estrutura/nucleo/EditKind.hpp"
+#include "estrutura/nucleo/LineEdit.hpp"
 #include "estrutura/nucleo/TextDiff.hpp"
 #include "estrutura/nucleo/TextSplitter.hpp"
 #include "estrutura/nucleo/TokenAlignmentProblem.hpp"
 
 #include "AlignmentOracle.hpp"
+#include "DiffOracle.hpp"
 #include "RandomProblem.hpp"
 #include "StringProblem.hpp"
 
@@ -21,6 +24,8 @@ using estrutura::alinhamento::Alignment;
 using estrutura::alinhamento::AlignmentColumn;
 using estrutura::alinhamento::NeedlemanWunschAligner;
 using estrutura::nucleo::AlignmentDiffer;
+using estrutura::nucleo::EditKind;
+using estrutura::nucleo::LineEdit;
 using estrutura::nucleo::TextDiff;
 using estrutura::nucleo::TextSplitter;
 using estrutura::nucleo::TokenAlignmentProblem;
@@ -120,5 +125,129 @@ TEST(NeedlemanWunschContraForcaBruta, CustoSorteadoParaCadaParECadaLacuna) {
         ASSERT_EQ(result.cost, oraculo::bruteForceCost(problem));
         ASSERT_TRUE(oraculo::isValid(problem, result.columns));
         ASSERT_EQ(oraculo::recomputedCost(problem, result.columns), result.cost);
+    }
+}
+
+namespace {
+
+LineEdit diffLine(const EditKind kind, const std::optional<int> beforeIndex, const std::optional<int> afterIndex,
+                  const std::string& beforeText, const std::string& afterText) {
+    LineEdit line;
+    line.kind = kind;
+    line.beforeIndex = beforeIndex;
+    line.afterIndex = afterIndex;
+    line.beforeText = beforeText;
+    line.afterText = afterText;
+    return line;
+}
+
+// "a" mantida, "b" apagada, "c" adicionada e "d" trocada por "e".
+TextDiff umDiffDeCadaTipo() {
+    TextDiff diff;
+    diff.lines = {
+        diffLine(EditKind::Kept, 0, 0, "a", "a"),
+        diffLine(EditKind::Removed, 1, std::nullopt, "b", ""),
+        diffLine(EditKind::Added, std::nullopt, 1, "", "c"),
+        diffLine(EditKind::Changed, 2, 2, "d", "e"),
+    };
+    return diff;
+}
+
+}  // namespace
+
+TEST(DiffOracle, CadaLadoJuntaAsLinhasQueExistemNele) {
+    const TextDiff diff = umDiffDeCadaTipo();
+
+    EXPECT_EQ(oraculo::beforeSide(diff), (std::vector<std::string>{"a", "b", "d"}));
+    EXPECT_EQ(oraculo::afterSide(diff), (std::vector<std::string>{"a", "c", "e"}));
+}
+
+TEST(DiffOracle, IndicesEmSequenciaSaoAceitos) {
+    EXPECT_TRUE(oraculo::indicesAreConsecutive(umDiffDeCadaTipo()));
+}
+
+TEST(DiffOracle, IndicePuladoERecusado) {
+    TextDiff diff = umDiffDeCadaTipo();
+    diff.lines[1].beforeIndex = 2;
+
+    EXPECT_FALSE(oraculo::indicesAreConsecutive(diff));
+}
+
+TEST(DiffOracle, IndiceNoLadoQueNaoExisteERecusado) {
+    TextDiff diff = umDiffDeCadaTipo();
+    diff.lines[2].beforeIndex = 1;
+
+    EXPECT_FALSE(oraculo::indicesAreConsecutive(diff));
+}
+
+TEST(DiffOracle, LinhaTrocadaContaComoUmaApagadaEUmaAdicionada) {
+    EXPECT_EQ(oraculo::changedLineCount(umDiffDeCadaTipo()), 4);
+}
+
+TEST(DiffOracle, ForcaBrutaDaMaiorSubsequenciaComum) {
+    EXPECT_EQ(oraculo::lcsBruteForce({}, {}), 0);
+    EXPECT_EQ(oraculo::lcsBruteForce({"a", "b", "c"}, {"a", "c"}), 2);
+    EXPECT_EQ(oraculo::lcsBruteForce({"a", "b"}, {"c", "d"}), 0);
+    EXPECT_EQ(oraculo::lcsBruteForce({"a", "b", "a"}, {"b", "a", "a"}), 2);
+}
+
+TEST(DiffOracle, JuntarLinhasDesfazOTextSplitter) {
+    const std::vector<std::string> linhas = {"a", "b", "a"};
+
+    EXPECT_EQ(oraculo::joinLines(linhas), "a\nb\na");
+    EXPECT_EQ(oraculo::joinLines({}), "");
+    EXPECT_EQ(TextSplitter::lines(oraculo::joinLines(linhas)), linhas);
+}
+
+namespace {
+
+const std::vector<std::string> vocabularioDeLinhas = {"a", "b", "c", "d"};
+
+std::string descrever(const std::vector<std::string>& linhas) {
+    std::string texto;
+    for (std::size_t posicao = 0; posicao < linhas.size(); ++posicao) {
+        texto += (posicao > 0 ? " | " : "") + linhas[posicao];
+    }
+    return "[" + texto + "]";
+}
+
+}  // namespace
+
+TEST(AlignmentDifferContraOraculo, ReconstroiAsDuasVersoes) {
+    GTEST_SKIP();
+
+    RandomProblemGenerator sorteio(2611);
+    const NeedlemanWunschAligner aligner;
+    const AlignmentDiffer differ(aligner);
+
+    for (int caso = 0; caso < 500; ++caso) {
+        const std::vector<std::string> antes = sorteio.lines(8, vocabularioDeLinhas);
+        const std::vector<std::string> depois = sorteio.lines(8, vocabularioDeLinhas);
+        SCOPED_TRACE("caso " + std::to_string(caso) + ": antes = " + descrever(antes) + ", depois = " + descrever(depois));
+
+        const TextDiff diff = differ.diff(oraculo::joinLines(antes), oraculo::joinLines(depois));
+
+        ASSERT_EQ(oraculo::beforeSide(diff), antes);
+        ASSERT_EQ(oraculo::afterSide(diff), depois);
+        ASSERT_TRUE(oraculo::indicesAreConsecutive(diff));
+    }
+}
+
+TEST(AlignmentDifferContraOraculo, FazOMinimoDeMudancas) {
+    GTEST_SKIP();
+
+    RandomProblemGenerator sorteio(2411);
+    const NeedlemanWunschAligner aligner;
+    const AlignmentDiffer differ(aligner);
+
+    for (int caso = 0; caso < 500; ++caso) {
+        const std::vector<std::string> antes = sorteio.lines(8, vocabularioDeLinhas);
+        const std::vector<std::string> depois = sorteio.lines(8, vocabularioDeLinhas);
+        SCOPED_TRACE("caso " + std::to_string(caso) + ": antes = " + descrever(antes) + ", depois = " + descrever(depois));
+
+        const TextDiff diff = differ.diff(oraculo::joinLines(antes), oraculo::joinLines(depois));
+        const int totalDeLinhas = static_cast<int>(antes.size() + depois.size());
+
+        ASSERT_EQ(oraculo::changedLineCount(diff), totalDeLinhas - 2 * oraculo::lcsBruteForce(antes, depois));
     }
 }

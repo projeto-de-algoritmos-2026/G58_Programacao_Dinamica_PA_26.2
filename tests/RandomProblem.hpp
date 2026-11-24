@@ -68,6 +68,15 @@ public:
 
         return {std::move(pairCosts), std::move(unmatchedXCosts), std::move(unmatchedYCosts)};
     }
+
+    std::vector<std::string> lines(const int maxCount, const std::vector<std::string>& vocabulary) {
+        std::vector<std::string> result;
+        const int count = between(0, maxCount);
+        for (int position = 0; position < count; ++position) {
+            result.push_back(vocabulary.at(between(0, static_cast<int>(vocabulary.size()) - 1)));
+        }
+        return result;
+    }
 };
 
 #endif //PROGRAMACAO_DINAMICA_G58_RANDOMPROBLEM_HPP
