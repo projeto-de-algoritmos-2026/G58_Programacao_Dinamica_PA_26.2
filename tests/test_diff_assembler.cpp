@@ -10,12 +10,14 @@
 #include "estrutura/nucleo/DiffAssembler.hpp"
 #include "estrutura/nucleo/EditKind.hpp"
 #include "estrutura/nucleo/TextDiff.hpp"
+#include "estrutura/nucleo/LineEdit.hpp"
 
 using estrutura::alinhamento::Alignment;
 using estrutura::alinhamento::AlignmentColumn;
 using estrutura::nucleo::DiffAssembler;
 using estrutura::nucleo::EditKind;
 using estrutura::nucleo::TextDiff;
+using estrutura::nucleo::LineEdit;
 
 using mocks::MockAligner;
 using testing::_;
@@ -36,4 +38,17 @@ protected:
 TEST_F(DiffAssemblerTest, SemColunasNaoTemLinhas) {
     const TextDiff resultado = assemble({}, {}, {});
     EXPECT_TRUE(resultado.lines.empty());
+}
+
+TEST_F(DiffAssemblerTest, ColunaComDoisIndicesViraKept) {
+    const TextDiff resultado = assemble({"a"}, {"a"}, {{0, 0}});
+    ASSERT_EQ(resultado.lines.size(), 1u);
+
+    const LineEdit& linha = resultado.lines[0];
+
+    EXPECT_EQ(linha.kind, EditKind::Kept);
+    EXPECT_EQ(linha.beforeIndex, 0);
+    EXPECT_EQ(linha.afterIndex, 0);
+    EXPECT_EQ(linha.beforeText, "a");
+    EXPECT_EQ(linha.afterText, "a");
 }
