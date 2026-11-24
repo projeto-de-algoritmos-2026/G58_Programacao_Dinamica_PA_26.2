@@ -52,3 +52,29 @@ TEST_F(DiffAssemblerTest, ColunaComDoisIndicesViraKept) {
     EXPECT_EQ(linha.beforeText, "a");
     EXPECT_EQ(linha.afterText, "a");
 }
+
+TEST_F(DiffAssemblerTest, SoIndiceAntesViraRemoved) {
+    const TextDiff resultado = assemble({"a"}, {}, {{0, std::nullopt}});
+    ASSERT_EQ(resultado.lines.size(), 1u);
+
+    const LineEdit& linha = resultado.lines[0];
+
+    EXPECT_EQ(linha.kind, EditKind::Removed);
+    EXPECT_EQ(linha.beforeIndex, 0);
+    EXPECT_EQ(linha.afterIndex, std::nullopt);
+    EXPECT_EQ(linha.beforeText, "a");
+    EXPECT_EQ(linha.afterText, "");
+}
+
+TEST_F(DiffAssemblerTest, SoIndiceDepoisViraAdded) {
+    const TextDiff resultado = assemble({}, {"a"}, {{std::nullopt, 0}});
+    ASSERT_EQ(resultado.lines.size(), 1u);
+
+    const LineEdit& linha = resultado.lines[0];
+
+    EXPECT_EQ(linha.kind, EditKind::Added);
+    EXPECT_EQ(linha.beforeIndex, std::nullopt);
+    EXPECT_EQ(linha.afterIndex, 0);
+    EXPECT_EQ(linha.beforeText, "");
+    EXPECT_EQ(linha.afterText, "a");
+}
