@@ -78,3 +78,16 @@ TEST_F(DiffAssemblerTest, SoIndiceDepoisViraAdded) {
     EXPECT_EQ(linha.beforeText, "");
     EXPECT_EQ(linha.afterText, "a");
 }
+
+TEST_F(DiffAssemblerTest, ColunasViramLinhasNaOrdemDoTexto) {
+    const TextDiff resultado = assemble({"a", "b"}, {"a", "c"}, {{0, 0}, {1, std::nullopt}, {std::nullopt, 1}});
+    ASSERT_EQ(resultado.lines.size(), 3u);
+
+    EXPECT_EQ(resultado.lines[0].kind, EditKind::Kept);
+
+    EXPECT_EQ(resultado.lines[1].kind, EditKind::Removed);
+    EXPECT_EQ(resultado.lines[1].beforeText, "b");
+
+    EXPECT_EQ(resultado.lines[2].kind, EditKind::Added);
+    EXPECT_EQ(resultado.lines[2].afterText, "c");
+}
