@@ -20,3 +20,20 @@ using estrutura::nucleo::TextDiff;
 using mocks::MockAligner;
 using testing::_;
 using testing::Return;
+
+class DiffAssemblerTest : public testing::Test {
+protected:
+    testing::StrictMock<MockAligner> aligner;
+    DiffAssembler assembler{aligner};
+
+    TextDiff assemble(const std::vector<std::string>& antes, const std::vector<std::string>& depois, const std::vector<AlignmentColumn>& colunas) {
+        Alignment alignment;
+        alignment.columns = colunas;
+        return assembler.assemble(antes, depois, alignment);
+    }
+};
+
+TEST_F(DiffAssemblerTest, SemColunasNaoTemLinhas) {
+    const TextDiff resultado = assemble({}, {}, {});
+    EXPECT_TRUE(resultado.lines.empty());
+}
