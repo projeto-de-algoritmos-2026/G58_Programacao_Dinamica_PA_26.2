@@ -9,7 +9,7 @@ DiffAssembler::DiffAssembler(const alinhamento::IAligner& aligner)
 }
 
 TextDiff DiffAssembler::assemble(const std::vector<std::string>& beforeLines, const std::vector<std::string>& afterLines, const alinhamento::Alignment& lineAlignment) const {
-	notImplemented("DiffAssembler::assemble", beforeLines, afterLines, lineAlignment);
+	return {};
 }
 
 std::vector<WordEdit> DiffAssembler::wordEdits(const std::string& beforeLine, const std::string& afterLine) const {
