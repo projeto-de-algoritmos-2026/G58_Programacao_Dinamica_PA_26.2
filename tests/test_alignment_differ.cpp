@@ -58,3 +58,15 @@ TEST_F(AlignmentDifferTest, DepoisVazioTudoRemoved) {
     EXPECT_EQ(resultado.lines[1].kind, EditKind::Removed);
 
 }
+
+TEST_F(AlignmentDifferTest, LinhaMovidaViraApagadaMaisAdicionada) {
+
+    const TextDiff resultado = differ.diff("a\nb", "b\na");
+
+    ASSERT_EQ(resultado.lines.size(), 3u);
+
+    EXPECT_EQ(resultado.count(EditKind::Kept), 1);
+    EXPECT_EQ(resultado.count(EditKind::Removed), 1);
+    EXPECT_EQ(resultado.count(EditKind::Added), 1);
+
+}
