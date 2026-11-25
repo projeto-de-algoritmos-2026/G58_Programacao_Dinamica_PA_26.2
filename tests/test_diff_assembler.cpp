@@ -121,3 +121,14 @@ TEST_F(DiffAssemblerTest, ChangedGuardaAsPalavras) {
     EXPECT_EQ(linha.words[2].before, "c");
     EXPECT_EQ(linha.words[2].after, "d");
 }
+
+TEST_F(DiffAssemblerTest, LinhasSemNadaEmComumContinuamSeparadas) {
+    const TextDiff resultado = assemble({"a b"}, {"c d"}, {{0, std::nullopt}, {std::nullopt, 0}});
+    ASSERT_EQ(resultado.lines.size(), 2u);
+
+    EXPECT_EQ(resultado.lines[0].kind, EditKind::Removed);
+    EXPECT_EQ(resultado.lines[0].beforeText, "a b");
+
+    EXPECT_EQ(resultado.lines[1].kind, EditKind::Added);
+    EXPECT_EQ(resultado.lines[1].afterText, "c d");
+}
