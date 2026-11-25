@@ -58,3 +58,12 @@ TEST(TextSplitter, LinhaVaziaRetornaNenhumaPalavra) {
 
     EXPECT_EQ(resultado, esperado);
 }
+
+TEST(TextSplitter, PalavrasSeparadasPorEspaco) {
+
+    const std::vector<std::string> resultado = TextSplitter::words("one two");
+
+    const std::vector<std::string> esperado = {"one", "two"};
+
+    EXPECT_EQ(resultado, esperado);
+}
