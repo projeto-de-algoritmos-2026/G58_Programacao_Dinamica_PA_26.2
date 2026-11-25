@@ -47,3 +47,14 @@ TEST_F(AlignmentDifferTest, AntesVazioTudoAdded) {
     EXPECT_EQ(resultado.lines[1].kind, EditKind::Added);
 
 }
+
+TEST_F(AlignmentDifferTest, DepoisVazioTudoRemoved) {
+
+    const TextDiff resultado = differ.diff("a\nb", "");
+
+    ASSERT_EQ(resultado.lines.size(), 2u);
+
+    EXPECT_EQ(resultado.lines[0].kind, EditKind::Removed);
+    EXPECT_EQ(resultado.lines[1].kind, EditKind::Removed);
+
+}
