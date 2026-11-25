@@ -49,3 +49,12 @@ TEST(TextSplitter, QuebraDoWindowsViraQuebraComum) {
 
     EXPECT_EQ(resultado, esperado);
 }
+
+TEST(TextSplitter, LinhaVaziaRetornaNenhumaPalavra) {
+
+    const std::vector<std::string> resultado = TextSplitter::words("");
+
+    const std::vector<std::string> esperado = {};
+
+    EXPECT_EQ(resultado, esperado);
+}
