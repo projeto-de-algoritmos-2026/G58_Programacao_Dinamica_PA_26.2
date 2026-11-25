@@ -17,3 +17,22 @@ using estrutura::nucleo::TextDiff;
 using mocks::MockAligner;
 using testing::_;
 using testing::Return;
+
+class AlignmentDifferTest : public testing::Test {
+protected:
+    NeedlemanWunschAligner aligner;
+    AlignmentDiffer differ{aligner};
+};
+
+TEST_F(AlignmentDifferTest, TextosIguaisSoTemLinhasKept) {
+
+    const TextDiff resultado = differ.diff("a\nb", "a\nb");
+
+    ASSERT_EQ(resultado.lines.size(), 2u);
+
+    EXPECT_EQ(resultado.lines[0].kind, EditKind::Kept);
+    EXPECT_EQ(resultado.lines[1].kind, EditKind::Kept);
+
+    EXPECT_TRUE(resultado.isIdentical());
+
+}
