@@ -76,3 +76,12 @@ TEST(TextSplitter, EspacosRepetidosNaoCriamPalavraVazia) {
 
     EXPECT_EQ(resultado, esperado);
 }
+
+TEST(TextSplitter, PontuacaoFicaGrudadaNaPalavra) {
+
+    const std::vector<std::string> resultado = TextSplitter::words("one, two");
+
+    const std::vector<std::string> esperado = {"one,", "two"};
+
+    EXPECT_EQ(resultado, esperado);
+}
