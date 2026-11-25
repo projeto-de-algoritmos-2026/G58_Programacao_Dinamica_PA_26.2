@@ -36,3 +36,14 @@ TEST_F(AlignmentDifferTest, TextosIguaisSoTemLinhasKept) {
     EXPECT_TRUE(resultado.isIdentical());
 
 }
+
+TEST_F(AlignmentDifferTest, AntesVazioTudoAdded) {
+
+    const TextDiff resultado = differ.diff("", "a\nb");
+
+    ASSERT_EQ(resultado.lines.size(), 2u);
+
+    EXPECT_EQ(resultado.lines[0].kind, EditKind::Added);
+    EXPECT_EQ(resultado.lines[1].kind, EditKind::Added);
+
+}
