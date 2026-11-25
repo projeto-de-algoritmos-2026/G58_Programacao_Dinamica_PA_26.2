@@ -100,3 +100,24 @@ TEST_F(DiffAssemblerTest, LinhasParecidasViramChanged) {
     EXPECT_EQ(linha.beforeText, "a b c");
     EXPECT_EQ(linha.afterText, "a b d");
 }
+
+TEST_F(DiffAssemblerTest, ChangedGuardaAsPalavras) {
+    const TextDiff resultado = assemble({"a b c"}, {"a b d"}, {{0, std::nullopt}, {std::nullopt, 0}});
+    ASSERT_EQ(resultado.lines.size(), 1u);
+
+    const LineEdit& linha = resultado.lines[0];
+
+    ASSERT_EQ(linha.words.size(), 3u);
+
+    EXPECT_EQ(linha.words[0].kind, EditKind::Kept);
+    EXPECT_EQ(linha.words[0].before, "a");
+    EXPECT_EQ(linha.words[0].after, "a");
+
+    EXPECT_EQ(linha.words[1].kind, EditKind::Kept);
+    EXPECT_EQ(linha.words[1].before, "b");
+    EXPECT_EQ(linha.words[1].after, "b");
+
+    EXPECT_EQ(linha.words[2].kind, EditKind::Changed);
+    EXPECT_EQ(linha.words[2].before, "c");
+    EXPECT_EQ(linha.words[2].after, "d");
+}
