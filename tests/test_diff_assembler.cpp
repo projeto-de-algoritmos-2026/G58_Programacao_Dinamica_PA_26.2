@@ -132,3 +132,15 @@ TEST_F(DiffAssemblerTest, LinhasSemNadaEmComumContinuamSeparadas) {
     EXPECT_EQ(resultado.lines[1].kind, EditKind::Added);
     EXPECT_EQ(resultado.lines[1].afterText, "c d");
 }
+
+TEST_F(DiffAssemblerTest, DuasApagadasEUmaAdicionada) {
+    const TextDiff resultado = assemble({"a b c", "x y z"}, {"a b d"}, {{0, std::nullopt},  {1, std::nullopt}, {std::nullopt, 0}});
+    ASSERT_EQ(resultado.lines.size(), 2u);
+
+    EXPECT_EQ(resultado.lines[0].kind, EditKind::Changed);
+    EXPECT_EQ(resultado.lines[0].beforeText, "a b c");
+    EXPECT_EQ(resultado.lines[0].afterText, "a b d");
+
+    EXPECT_EQ(resultado.lines[1].kind, EditKind::Removed);
+    EXPECT_EQ(resultado.lines[1].beforeText, "x y z");
+}
