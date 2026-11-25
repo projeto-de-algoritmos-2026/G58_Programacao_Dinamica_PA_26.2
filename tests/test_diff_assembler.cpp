@@ -87,3 +87,16 @@ TEST_F(DiffAssemblerTest, ColunasViramLinhasNaOrdemDoTexto) {
     EXPECT_EQ(resultado.lines[2].kind, EditKind::Added);
     EXPECT_EQ(resultado.lines[2].afterText, "c");
 }
+
+TEST_F(DiffAssemblerTest, LinhasParecidasViramChanged) {
+    const TextDiff resultado = assemble({"a b c"}, {"a b d"}, {{0, std::nullopt}, {std::nullopt, 0}});
+    ASSERT_EQ(resultado.lines.size(), 1u);
+
+    const LineEdit& linha = resultado.lines[0];
+
+    EXPECT_EQ(linha.kind, EditKind::Changed);
+    EXPECT_EQ(linha.beforeIndex, 0);
+    EXPECT_EQ(linha.afterIndex, 0);
+    EXPECT_EQ(linha.beforeText, "a b c");
+    EXPECT_EQ(linha.afterText, "a b d");
+}
