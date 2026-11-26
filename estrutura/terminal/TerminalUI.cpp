@@ -50,6 +50,8 @@ void TerminalUI::run() const {
 				output << "Não foi possível abrir o arquivo: " << firstPath << "\n";
 			} else if (!after.has_value()) {
 				output << "Não foi possível abrir o arquivo: " << secondPath << "\n";
+			} else {
+				const nucleo::TextDiff diff = differ.diff(*before, *after);
 			}
 
 		} else if (command == "") {
