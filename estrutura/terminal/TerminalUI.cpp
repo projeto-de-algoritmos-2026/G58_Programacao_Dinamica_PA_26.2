@@ -51,7 +51,7 @@ void TerminalUI::run() const {
 			} else if (!after.has_value()) {
 				output << "Não foi possível abrir o arquivo: " << secondPath << "\n";
 			} else {
-				const nucleo::TextDiff diff = differ.diff(*before, *after);
+				printDiff(differ.diff(*before, *after));
 			}
 
 		} else if (command == "") {
@@ -68,8 +68,13 @@ void TerminalUI::run() const {
 
 }
 
-void TerminalUI::printDiff(const nucleo::TextDiff& diff) {
-	notImplemented("TerminalUI::printDiff", diff);
+ void TerminalUI::printDiff(const nucleo::TextDiff& diff) const {
+
+	for (const nucleo::LineEdit& line : diff.lines) {
+		if (line.kind == nucleo::EditKind::Kept) {
+			output << "  " << line.beforeText << "\n";
+		}
+	}
 }
 
 void TerminalUI::printVersions(const std::vector<nucleo::Version>& versions) {

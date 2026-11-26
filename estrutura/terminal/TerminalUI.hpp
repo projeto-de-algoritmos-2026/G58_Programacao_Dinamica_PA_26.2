@@ -16,7 +16,7 @@ class TerminalUI {
 	std::istream& input;
 	std::ostream& output;
 
-	static void printDiff(const nucleo::TextDiff& diff);
+	void printDiff(const nucleo::TextDiff& diff) const;
 
 	static void printVersions(const std::vector<nucleo::Version>& versions);
 
