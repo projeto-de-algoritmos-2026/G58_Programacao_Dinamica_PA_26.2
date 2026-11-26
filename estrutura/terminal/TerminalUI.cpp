@@ -17,6 +17,8 @@ void TerminalUI::run() const {
 
 	while(std::getline(input, line)) {
 
+		if (line == "sair") break;
+
 		if (line == "ajuda") {
 			output  << "comparar <a> <b>	compara os arquivos a e b\n"
 			<< "ajuda						esta lista\n"
