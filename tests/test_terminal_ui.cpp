@@ -1,5 +1,6 @@
 #include <sstream>
 #include <string>
+#include <fstream>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -21,6 +22,15 @@ using testing::_;
 using testing::HasSubstr;
 using testing::Not;
 using testing::Return;
+
+namespace {
+    std::string lerArquivo(const std::string& caminho) {
+        std::ifstream arquivo(caminho);
+        std::ostringstream conteudo;
+        conteudo << arquivo.rdbuf();
+        return conteudo.str();
+    }
+}
 
 
 class TerminalUITest : public testing::Test {
@@ -72,4 +82,16 @@ TEST_F(TerminalUITest, ArquivoQueNaoAbreAvisaEContinua) {
     const std::string resultado = rodar("comparar nao-existe.txt outro.txt\n");
 
     EXPECT_THAT(resultado, HasSubstr("Não foi possível abrir"));
+}
+
+TEST_F(TerminalUITest, CompararLeOsDoisArquivosEChamaODiffer) {
+
+    const std::string caminho1 = std::string(EXEMPLOS_DIR) + "/rascunho-1.txt";
+    const std::string caminho2 = std::string(EXEMPLOS_DIR) + "/rascunho-2.txt";
+
+    EXPECT_CALL(differ, diff(lerArquivo(caminho1), lerArquivo(caminho2))).WillOnce(Return(TextDiff{}));
+
+    const std::string resultado = rodar("comparar " + caminho1 + " " + caminho2 + "\n");
+
+    EXPECT_THAT(resultado, Not(HasSubstr("Não foi possível abrir")));
 }
