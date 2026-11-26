@@ -159,3 +159,25 @@ TEST_F(DiffAssemblerTest, NuncaPareiaAtravesDeUmaKept) {
     EXPECT_EQ(resultado.lines[2].kind, EditKind::Added);
     EXPECT_EQ(resultado.lines[2].afterText, "a b d");
 }
+
+TEST_F(DiffAssemblerTest, PalavraAdicionadaGuardaODepois) {
+
+    const TextDiff resultado = assemble({"a b"}, {"a x b"}, {{0, std::nullopt},  {std::nullopt, 0}});
+    ASSERT_EQ(resultado.lines.size(), 1u);
+
+    const LineEdit& linha = resultado.lines[0];
+
+    ASSERT_EQ(linha.words.size(), 3u);
+
+    EXPECT_EQ(linha.words[0].kind, EditKind::Kept);
+    EXPECT_EQ(linha.words[0].before, "a");
+    EXPECT_EQ(linha.words[0].after, "a");
+
+    EXPECT_EQ(linha.words[1].kind, EditKind::Added);
+    EXPECT_EQ(linha.words[1].before, "");
+    EXPECT_EQ(linha.words[1].after, "x");
+
+    EXPECT_EQ(linha.words[2].kind, EditKind::Kept);
+    EXPECT_EQ(linha.words[2].before, "b");
+    EXPECT_EQ(linha.words[2].after, "b");
+}
