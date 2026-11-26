@@ -48,3 +48,9 @@ TEST_F(TerminalUITest, AjudaListaOsComandos) {
     EXPECT_THAT(resultado, HasSubstr("comparar"));
     EXPECT_THAT(resultado, HasSubstr("sair"));
 }
+
+TEST_F(TerminalUITest, SairEncerraMesmoComMaisComandos) {
+    const std::string resultado = rodar("sair\n ajuda\n");
+
+    EXPECT_THAT(resultado, Not(HasSubstr("comparar")));
+}
