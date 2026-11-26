@@ -25,6 +25,8 @@ void TerminalUI::run() const {
 			<< "sair						encerra\n";
 		}
 
+		output << "Comando desconhecido.";
+
 	}
 
 }
