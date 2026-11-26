@@ -1,6 +1,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <iostream>
+
 #include "Mocks.hpp"
 
 #include "estrutura/alinhamento/Alignment.hpp"
@@ -27,7 +29,7 @@ TEST(Esqueleto, AlinhamentoNovoComecaComCustoZero) {
 TEST(Esqueleto, AsClassesDaEntregaSeMontamComoNoMain) {
 	const NeedlemanWunschAligner aligner;
 	const AlignmentDiffer differ(aligner);
-	const TerminalUI terminal(differ);
+	const TerminalUI terminal(differ, std::cin, std::cout);
 
 	SUCCEED();
 }

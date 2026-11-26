@@ -29,6 +29,7 @@ add_executable(version_tests
         AlignmentOracle.hpp
         RandomProblem.hpp
         DiffOracle.hpp
+        test_terminal_ui.cpp
 )
 
 target_compile_definitions(version_tests PRIVATE EXEMPLOS_DIR="${PROJECT_SOURCE_DIR}/exemplos")
