@@ -134,7 +134,7 @@ std::vector<WordEdit> DiffAssembler::wordEdits(const std::string& beforeLine, co
 			wordEdit.before = beforeWords.at(*column.xIndex);
 		} else {
 			wordEdit.kind = EditKind::Added;
-			wordEdit.before = beforeWords.at(*column.xIndex);
+			wordEdit.after = afterWords.at(*column.yIndex);
 		}
 
 		result.push_back(wordEdit);
