@@ -13,7 +13,7 @@ int main() {
 	try {
 		NeedlemanWunschAligner aligner;
 		AlignmentDiffer differ(aligner);
-		TerminalUI terminal(differ);
+		TerminalUI terminal(differ, std::cin, std::cout);
 		terminal.run();
 
 	} catch (const std::exception& e) {

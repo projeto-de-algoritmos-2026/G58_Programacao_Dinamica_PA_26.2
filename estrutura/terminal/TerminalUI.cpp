@@ -1,15 +1,21 @@
 #include "TerminalUI.hpp"
 
+#include <string>
+
 #include "estrutura/NotImplemented.hpp"
 
 namespace estrutura::terminal {
 
-TerminalUI::TerminalUI(const nucleo::IDiffer& differ)
-	: differ(differ) {
+TerminalUI::TerminalUI(const nucleo::IDiffer& differ, std::istream& input, std::ostream& output)
+	: differ(differ), input(input), output(output) {
 }
 
 void TerminalUI::run() const {
-	notImplemented("TerminalUI::run", differ);
+
+	std::string line;
+
+	while(std::getline(input, line)) { }
+
 }
 
 void TerminalUI::printDiff(const nucleo::TextDiff& diff) {

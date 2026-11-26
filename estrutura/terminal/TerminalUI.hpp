@@ -2,6 +2,8 @@
 #define ESTRUTURA_TERMINAL_TERMINAL_U_I_H
 
 #include <vector>
+#include <istream>
+#include <ostream>
 
 #include "estrutura/nucleo/IDiffer.hpp"
 #include "estrutura/nucleo/TextDiff.hpp"
@@ -11,13 +13,15 @@ namespace estrutura::terminal {
 class TerminalUI {
 
 	const nucleo::IDiffer& differ;
+	std::istream& input;
+	std::ostream& output;
 
 	static void printDiff(const nucleo::TextDiff& diff);
 
 	static void printVersions(const std::vector<nucleo::Version>& versions);
 
 public:
-	explicit TerminalUI(const nucleo::IDiffer& differ);
+	explicit TerminalUI(const nucleo::IDiffer& differ, std::istream& input, std::ostream& output);
 
 	void run() const;
 
