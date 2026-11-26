@@ -1,5 +1,6 @@
 #include "TerminalUI.hpp"
 
+#include <iostream>
 #include <string>
 
 #include "estrutura/NotImplemented.hpp"
@@ -14,7 +15,15 @@ void TerminalUI::run() const {
 
 	std::string line;
 
-	while(std::getline(input, line)) { }
+	while(std::getline(input, line)) {
+
+		if (line == "ajuda") {
+			output  << "comparar <a> <b>	compara os arquivos a e b\n"
+			<< "ajuda						esta lista\n"
+			<< "sair						encerra\n";
+		}
+
+	}
 
 }
 
