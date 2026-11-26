@@ -1,6 +1,5 @@
 #include "TerminalUI.hpp"
 
-#include <iostream>
 #include <string>
 
 #include "estrutura/NotImplemented.hpp"
@@ -19,13 +18,15 @@ void TerminalUI::run() const {
 
 		if (line == "sair") break;
 
-		if (line == "ajuda") {
+		if (line == "") {
+
+		} else if (line == "ajuda") {
 			output  << "comparar <a> <b>	compara os arquivos a e b\n"
 			<< "ajuda						esta lista\n"
 			<< "sair						encerra\n";
+		} else {
+			output << "Comando desconhecido.";
 		}
-
-		output << "Comando desconhecido.";
 
 	}
 
