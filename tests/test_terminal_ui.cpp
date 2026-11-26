@@ -67,3 +67,9 @@ TEST_F(TerminalUITest, LinhaVaziaNaoFazNada) {
 
     EXPECT_EQ(resultado, "");
 }
+
+TEST_F(TerminalUITest, ArquivoQueNaoAbreAvisaEContinua) {
+    const std::string resultado = rodar("comparar nao-existe.txt outro.txt\n");
+
+    EXPECT_THAT(resultado, HasSubstr("Não foi possível abrir"));
+}
