@@ -10,11 +10,13 @@
 #include "estrutura/nucleo/EditKind.hpp"
 #include "estrutura/nucleo/LineEdit.hpp"
 #include "estrutura/nucleo/TextDiff.hpp"
+#include "estrutura/nucleo/WordEdit.hpp"
 #include "estrutura/terminal/TerminalUI.hpp"
 
 using estrutura::nucleo::EditKind;
 using estrutura::nucleo::LineEdit;
 using estrutura::nucleo::TextDiff;
+using estrutura::nucleo::WordEdit;
 using estrutura::terminal::TerminalUI;
 
 using mocks::MockDiffer;
@@ -30,6 +32,22 @@ namespace {
         conteudo << arquivo.rdbuf();
         return conteudo.str();
     }
+
+    LineEdit linha(const EditKind kind, const std::string& antes, const std::string& depois) {
+        LineEdit edit;
+        edit.kind = kind;
+        edit.beforeText = antes;
+        edit.afterText = depois;
+        return edit;
+    }
+
+    WordEdit palavra(const EditKind kind, const std::string& antes, const std::string& depois) {
+        WordEdit edit;
+        edit.kind = kind;
+        edit.before = antes;
+        edit.after = depois;
+        return edit;
+    }
 }
 
 
@@ -43,6 +61,14 @@ protected:
         const TerminalUI terminal(differ, entrada, saida);
         terminal.run();
         return saida.str();
+    }
+
+    std::string compararDevolvendo(const TextDiff& diffDevolvido) {
+        EXPECT_CALL(differ, diff(_, _)).WillOnce(Return(diffDevolvido));
+
+        const std::string caminho1 = std::string(EXEMPLOS_DIR) + "/rascunho-1.txt";
+        const std::string caminho2 = std::string(EXEMPLOS_DIR) + "/rascunho-2.txt";
+        return rodar("comparar " + caminho1 + " " + caminho2 + "\n");
     }
 };
 
@@ -94,4 +120,11 @@ TEST_F(TerminalUITest, CompararLeOsDoisArquivosEChamaODiffer) {
     const std::string resultado = rodar("comparar " + caminho1 + " " + caminho2 + "\n");
 
     EXPECT_THAT(resultado, Not(HasSubstr("Não foi possível abrir")));
+}
+
+TEST_F(TerminalUITest, LinhaMantidaComDoisEspacos) {
+    TextDiff diff;
+    diff.lines = {linha(EditKind::Kept, "a", "a")};
+
+    EXPECT_THAT(compararDevolvendo(diff), HasSubstr(" a\n"));
 }
