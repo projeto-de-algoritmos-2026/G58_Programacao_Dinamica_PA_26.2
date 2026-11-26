@@ -50,7 +50,7 @@ TEST_F(TerminalUITest, AjudaListaOsComandos) {
 }
 
 TEST_F(TerminalUITest, SairEncerraMesmoComMaisComandos) {
-    const std::string resultado = rodar("sair\n ajuda\n");
+    const std::string resultado = rodar("sair\najuda\n");
 
     EXPECT_THAT(resultado, Not(HasSubstr("comparar")));
 }
@@ -60,4 +60,10 @@ TEST_F(TerminalUITest, ComandoDesconhecidoAvisaEContinua) {
 
     EXPECT_THAT(resultado, HasSubstr("desconhecido"));
     EXPECT_THAT(resultado, HasSubstr("comparar"));
+}
+
+TEST_F(TerminalUITest, LinhaVaziaNaoFazNada) {
+    const std::string resultado = rodar("\n");
+
+    EXPECT_EQ(resultado, "");
 }
