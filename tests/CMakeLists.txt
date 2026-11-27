@@ -30,6 +30,7 @@ add_executable(version_tests
         RandomProblem.hpp
         DiffOracle.hpp
         test_terminal_ui.cpp
+        TestFiles.hpp
 )
 
 target_compile_definitions(version_tests PRIVATE EXEMPLOS_DIR="${PROJECT_SOURCE_DIR}/exemplos")
