@@ -126,5 +126,13 @@ TEST_F(TerminalUITest, LinhaMantidaComDoisEspacos) {
     TextDiff diff;
     diff.lines = {linha(EditKind::Kept, "a", "a")};
 
-    EXPECT_THAT(compararDevolvendo(diff), HasSubstr(" a\n"));
+    EXPECT_THAT(compararDevolvendo(diff), HasSubstr("  a\n"));
+}
+
+TEST_F(TerminalUITest, ApagadaComMenosEAdicionadaComMais) {
+    TextDiff diff;
+    diff.lines = {linha(EditKind::Removed, "b", ""),
+    (linha(EditKind::Added, "", "c"))};
+
+    EXPECT_THAT(compararDevolvendo(diff), HasSubstr("- b\n+ c\n"));
 }
