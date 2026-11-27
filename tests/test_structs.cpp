@@ -33,8 +33,8 @@ TEST(AlignmentColumn, MesmosIndicesSaoIguais) {
 TEST(AlignmentColumn, LacunaEmXDiferenteDeIndiceZero) {
 
     AlignmentColumn colunaA;
-    colunaA.xIndex = 1;
-    colunaA.yIndex = 0;
+    colunaA.xIndex = 0;
+    colunaA.yIndex = 1;
 
     AlignmentColumn colunaB;
     colunaB.yIndex = 1;
