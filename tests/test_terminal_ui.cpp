@@ -136,3 +136,18 @@ TEST_F(TerminalUITest, ApagadaComMenosEAdicionadaComMais) {
 
     EXPECT_THAT(compararDevolvendo(diff), HasSubstr("- b\n+ c\n"));
 }
+
+TEST_F(TerminalUITest, TrocadaMostraAsPalavras) {
+
+    LineEdit trocada = linha(EditKind::Changed, "I count one", "I count two");
+    trocada.words = {
+        palavra(EditKind::Kept, "I", "I"),
+        palavra(EditKind::Kept, "count", "count"),
+        palavra(EditKind::Changed, "one", "two")
+    };
+
+    TextDiff diff;
+    diff.lines = {trocada};
+
+    EXPECT_THAT(compararDevolvendo(diff), HasSubstr("~ I count [-one-]{+two+}\n"));
+}
