@@ -5,6 +5,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+function(enable_warnings target)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        target_compile_options(${target} PRIVATE -Wall -Wextra)
+    endif ()
+endfunction()
+
 add_library(version_core STATIC
         estrutura/alinhamento/AlignmentColumn.cpp
         estrutura/alinhamento/CostTable.cpp
@@ -28,16 +34,16 @@ add_library(version_core STATIC
 )
 
 target_include_directories(version_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    target_compile_options(version_core PRIVATE -Wall -Wextra)
-endif ()
+enable_warnings(version_core)
 
 add_executable(version estrutura/terminal/main.cpp)
 target_link_libraries(version PRIVATE version_core)
+enable_warnings(version)
 
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bench/bench_diff.cpp)
     add_executable(version_bench bench/bench_diff.cpp)
     target_link_libraries(version_bench PRIVATE version_core)
+    enable_warnings(version_bench)
 endif ()
 
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/tests/CMakeLists.txt)

@@ -36,6 +36,7 @@ add_executable(version_tests
 target_compile_definitions(version_tests PRIVATE EXEMPLOS_DIR="${PROJECT_SOURCE_DIR}/exemplos")
 
 target_link_libraries(version_tests PRIVATE version_core GTest::gmock_main)
+enable_warnings(version_tests)
 
 include(GoogleTest)
 gtest_discover_tests(version_tests)
