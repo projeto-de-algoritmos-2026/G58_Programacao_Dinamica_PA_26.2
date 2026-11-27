@@ -87,6 +87,7 @@ namespace estrutura::alinhamento {
 
         std::vector<AlignmentColumn> columns;
 
+        // Diagonal primeiro, depois x sem par, depois y sem par
         while (xPrefixLength > 0 || yPrefixLength > 0) {
             if (candidates.cameFromPair(xPrefixLength, yPrefixLength)) {
                 columns.push_back({xPrefixLength - 1, yPrefixLength - 1});

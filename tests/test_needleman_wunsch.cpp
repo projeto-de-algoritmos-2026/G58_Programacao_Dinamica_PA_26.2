@@ -217,3 +217,17 @@ TEST(NeedlemanWunschAligner, ExemplosTemColunasValidasECustoRecalculadoIgual) {
         EXPECT_EQ(oraculo::recomputedCost(problem, result.columns), result.cost);
     }
 }
+
+TEST(NeedlemanWunschAligner, EmpatePrefereADiagonal) {
+
+    const std::vector<AlignmentColumn> colunasEsperadas = {{0, 0}};
+
+    const StringProblem problem("a", "b", 2, 1);
+
+    const NeedlemanWunschAligner aligner;
+
+    const Alignment result = aligner.align(problem);
+
+    EXPECT_EQ(result.cost, 2);
+    EXPECT_EQ(result.columns, colunasEsperadas);
+}
