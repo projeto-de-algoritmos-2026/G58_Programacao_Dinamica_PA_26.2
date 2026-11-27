@@ -27,6 +27,17 @@ namespace estrutura::nucleo {
 
             return 2 * keptCount >= std::max(beforeCount, afterCount);
         }
+
+        LineEdit changedLine(const LineEdit &removed, const LineEdit &added, const std::vector<WordEdit> &words) {
+            LineEdit changed;
+            changed.kind = EditKind::Changed;
+            changed.beforeIndex = removed.beforeIndex;
+            changed.afterIndex = added.afterIndex;
+            changed.beforeText = removed.beforeText;
+            changed.afterText = added.afterText;
+            changed.words = words;
+            return changed;
+        }
     } // namespace
 
     DiffAssembler::DiffAssembler(const alinhamento::IAligner &aligner)
@@ -76,8 +87,8 @@ namespace estrutura::nucleo {
         return result;
     }
 
-    void DiffAssembler::closeBlock(std::vector<LineEdit>& removed,std::vector<LineEdit>& added, std::vector<LineEdit>& output) const {
-
+    void DiffAssembler::closeBlock(std::vector<LineEdit> &removed, std::vector<LineEdit> &added,
+                                   std::vector<LineEdit> &output) const {
         const std::size_t pairCount = std::max(removed.size(), added.size());
 
         for (std::size_t position = 0; position < pairCount; position++) {
@@ -89,14 +100,7 @@ namespace estrutura::nucleo {
                                                               added[position].afterText);
 
                 if (areSimilar(words)) {
-                    LineEdit changed;
-                    changed.kind = EditKind::Changed;
-                    changed.beforeIndex = removed[position].beforeIndex;
-                    changed.afterIndex = added[position].afterIndex;
-                    changed.beforeText = removed[position].beforeText;
-                    changed.afterText = added[position].afterText;
-                    changed.words = words;
-                    output.push_back(changed);
+                    output.push_back(changedLine(removed[position], added[position], words));
                     continue;
                 }
             }
