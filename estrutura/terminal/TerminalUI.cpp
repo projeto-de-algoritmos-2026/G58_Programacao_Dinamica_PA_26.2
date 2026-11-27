@@ -83,6 +83,11 @@ void TerminalUI::run() const {
 
  void TerminalUI::printDiff(const nucleo::TextDiff& diff) const {
 
+		if (diff.isIdentical()) {
+			output << "Os arquivos são iguais.\n";
+			return;
+		}
+
 	for (const nucleo::LineEdit& line : diff.lines) {
 		if (line.kind == nucleo::EditKind::Kept) {
 			output << "  " << line.beforeText << "\n";
