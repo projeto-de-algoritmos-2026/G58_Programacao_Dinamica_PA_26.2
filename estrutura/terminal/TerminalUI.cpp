@@ -1,4 +1,5 @@
 #include "TerminalUI.hpp"
+#include "estrutura/nucleo/WordEdit.hpp"
 
 #include <string>
 #include <sstream>
@@ -18,6 +19,18 @@ namespace estrutura::terminal {
 			content << file.rdbuf();
 			return content.str();
 		}
+
+		std::string formatWord(const nucleo::WordEdit& word) {
+			if (word.kind == nucleo::EditKind::Kept) {
+				return word.before;
+			} else if (word.kind == nucleo::EditKind::Changed) {
+					return "[-" + word.before + "-]{+" + word.after + "+}";
+			} else if (word.kind == nucleo::EditKind::Removed) {
+				return "[-" + word.before + "-]";
+			}
+			return "{+" + word.after + "+}";
+		}
+
 	}
 
 TerminalUI::TerminalUI(const nucleo::IDiffer& differ, std::istream& input, std::ostream& output)
@@ -77,6 +90,17 @@ void TerminalUI::run() const {
 			output << "- " << line.beforeText << "\n";
 		} else if (line.kind == nucleo::EditKind::Added) {
 			output << "+ " << line.afterText << "\n";
+		} else if (line.kind == nucleo::EditKind::Changed) {
+			output << "~ ";
+			bool firstWord = true;
+			for (const nucleo::WordEdit& word : line.words) {
+				if (!firstWord) {
+					output << " ";
+				}
+				output << formatWord(word);
+				firstWord = false;
+			}
+			output << "\n";
 		}
 	}
 }
