@@ -1,0 +1,8 @@
+ajuda
+comparar exemplos/rascunho-1.txt exemplos/rascunho-2.txt
+comparar exemplos/rascunho-2.txt exemplos/rascunho-3.txt
+comparar exemplos/rascunho-1.txt exemplos/nao-existe.txt
+
+xyz
+sair
+ajuda
