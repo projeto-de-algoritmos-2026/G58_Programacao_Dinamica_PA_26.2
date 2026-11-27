@@ -1,6 +1,13 @@
 #include "TokenAlignmentProblem.hpp"
 
 namespace estrutura::nucleo {
+    namespace {
+        constexpr int lineMismatchCost = 3;
+        constexpr int lineUnmatchedCost = 1;
+        constexpr int wordMismatchCost = 1;
+        constexpr int wordUnmatchedCost = 1;
+    }
+
     TokenAlignmentProblem::TokenAlignmentProblem(const std::vector<std::string> &before,
                                                  const std::vector<std::string> &after, const int mismatchCost,
                                                  const int unmatchedCost)
@@ -9,12 +16,12 @@ namespace estrutura::nucleo {
 
     TokenAlignmentProblem TokenAlignmentProblem::forLines(const std::vector<std::string> &before,
                                                           const std::vector<std::string> &after) {
-        return {before, after, 3, 1};
+        return {before, after, lineMismatchCost, lineUnmatchedCost};
     }
 
     TokenAlignmentProblem TokenAlignmentProblem::forWords(const std::vector<std::string> &before,
                                                           const std::vector<std::string> &after) {
-        return {before, after, 1, 1};
+        return {before, after, wordMismatchCost, wordUnmatchedCost};
     }
 
     int TokenAlignmentProblem::lengthX() const { return static_cast<int>(before.size()); }
