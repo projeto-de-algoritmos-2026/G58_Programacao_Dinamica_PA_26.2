@@ -214,7 +214,6 @@ std::string descrever(const std::vector<std::string>& linhas) {
 }  // namespace
 
 TEST(AlignmentDifferContraOraculo, ReconstroiAsDuasVersoes) {
-    GTEST_SKIP();
 
     RandomProblemGenerator sorteio(2611);
     const NeedlemanWunschAligner aligner;
@@ -234,7 +233,6 @@ TEST(AlignmentDifferContraOraculo, ReconstroiAsDuasVersoes) {
 }
 
 TEST(AlignmentDifferContraOraculo, FazOMinimoDeMudancas) {
-    GTEST_SKIP();
 
     RandomProblemGenerator sorteio(2411);
     const NeedlemanWunschAligner aligner;
