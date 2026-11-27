@@ -8,6 +8,7 @@
 #include "estrutura/alinhamento/IAligner.hpp"
 #include "estrutura/nucleo/TextDiff.hpp"
 #include "estrutura/nucleo/WordEdit.hpp"
+#include "estrutura/nucleo/LineEdit.hpp"
 
 namespace estrutura::nucleo {
     class DiffAssembler {
@@ -15,6 +16,8 @@ namespace estrutura::nucleo {
 
         [[nodiscard]] std::vector<WordEdit>
         wordEdits(const std::string &beforeLine, const std::string &afterLine) const;
+
+        void closeBlock(std::vector<LineEdit>& removed, std::vector<LineEdit>& added, std::vector<LineEdit>& output) const;
 
     public:
         explicit DiffAssembler(const alinhamento::IAligner &aligner);

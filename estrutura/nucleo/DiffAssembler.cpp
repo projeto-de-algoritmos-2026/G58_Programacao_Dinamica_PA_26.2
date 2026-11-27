@@ -57,43 +57,6 @@ namespace estrutura::nucleo {
             lines.push_back(line);
         }
 
-        const auto closeBlock = [this](std::vector<LineEdit> &removed, std::vector<LineEdit> &added,
-                                       std::vector<LineEdit> &output) {
-            const std::size_t pairCount = std::max(removed.size(), added.size());
-
-            for (std::size_t position = 0; position < pairCount; position++) {
-                const bool hasRemoved = position < removed.size();
-                const bool hasAdded = position < added.size();
-
-                if (hasRemoved && hasAdded) {
-                    const std::vector<WordEdit> words = wordEdits(removed[position].beforeText,
-                                                                  added[position].afterText);
-
-                    if (areSimilar(words)) {
-                        LineEdit changed;
-                        changed.kind = EditKind::Changed;
-                        changed.beforeIndex = removed[position].beforeIndex;
-                        changed.afterIndex = added[position].afterIndex;
-                        changed.beforeText = removed[position].beforeText;
-                        changed.afterText = added[position].afterText;
-                        changed.words = words;
-                        output.push_back(changed);
-                        continue;
-                    }
-                }
-
-                if (hasRemoved) {
-                    output.push_back(removed[position]);
-                }
-                if (hasAdded) {
-                    output.push_back(added[position]);
-                }
-            }
-
-            removed.clear();
-            added.clear();
-        };
-
         TextDiff result;
         std::vector<LineEdit> removedBlock;
         std::vector<LineEdit> addedBlock;
@@ -111,6 +74,41 @@ namespace estrutura::nucleo {
         closeBlock(removedBlock, addedBlock, result.lines);
 
         return result;
+    }
+
+    void DiffAssembler::closeBlock(std::vector<LineEdit>& removed,std::vector<LineEdit>& added, std::vector<LineEdit>& output) const {
+
+        const std::size_t pairCount = std::max(removed.size(), added.size());
+
+        for (std::size_t position = 0; position < pairCount; position++) {
+            const bool hasRemoved = position < removed.size();
+            const bool hasAdded = position < added.size();
+
+            if (hasRemoved && hasAdded) {
+                const std::vector<WordEdit> words = wordEdits(removed[position].beforeText,
+                                                              added[position].afterText);
+
+                if (areSimilar(words)) {
+                    LineEdit changed;
+                    changed.kind = EditKind::Changed;
+                    changed.beforeIndex = removed[position].beforeIndex;
+                    changed.afterIndex = added[position].afterIndex;
+                    changed.beforeText = removed[position].beforeText;
+                    changed.afterText = added[position].afterText;
+                    changed.words = words;
+                    output.push_back(changed);
+                    continue;
+                }
+            }
+            if (hasRemoved) {
+                output.push_back(removed[position]);
+            }
+            if (hasAdded) {
+                output.push_back(added[position]);
+            }
+        }
+        removed.clear();
+        added.clear();
     }
 
     std::vector<WordEdit> DiffAssembler::wordEdits(const std::string &beforeLine, const std::string &afterLine) const {
