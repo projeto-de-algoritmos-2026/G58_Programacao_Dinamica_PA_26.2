@@ -5,13 +5,11 @@
 #include <vector>
 
 namespace estrutura::nucleo {
-class TextSplitter {
-public:
-	[[nodiscard]] static std::vector<std::string> lines(const std::string& text);
+    class TextSplitter {
+    public:
+        [[nodiscard]] static std::vector<std::string> lines(const std::string &text);
 
-	[[nodiscard]] static std::vector<std::string> words(const std::string& line);
-
-};
-
-}  // namespace estrutura::nucleo
+        [[nodiscard]] static std::vector<std::string> words(const std::string &line);
+    };
+} // namespace estrutura::nucleo
 #endif

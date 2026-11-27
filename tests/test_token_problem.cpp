@@ -8,7 +8,6 @@
 using estrutura::nucleo::TokenAlignmentProblem;
 
 TEST(TokenAlignmentProblem, TamanhosSaoOsDasListas) {
-
     const std::vector<std::string> antes = {"a", "b"};
     const std::vector<std::string> depois = {"a", "c", "d"};
     constexpr int mismatchCost = 7;
@@ -21,7 +20,6 @@ TEST(TokenAlignmentProblem, TamanhosSaoOsDasListas) {
 }
 
 TEST(TokenAlignmentProblem, CustoDoParVemDoConstrutor) {
-
     const std::vector<std::string> antes = {"a", "b"};
     const std::vector<std::string> depois = {"a", "c", "d"};
     constexpr int mismatchCost = 7;
@@ -35,7 +33,6 @@ TEST(TokenAlignmentProblem, CustoDoParVemDoConstrutor) {
 }
 
 TEST(TokenAlignmentProblem, CustoDaLacunaVemDoConstrutor) {
-
     const std::vector<std::string> antes = {"a", "b"};
     const std::vector<std::string> depois = {"a", "c", "d"};
     constexpr int mismatchCost = 7;
@@ -49,7 +46,6 @@ TEST(TokenAlignmentProblem, CustoDaLacunaVemDoConstrutor) {
 }
 
 TEST(TokenAlignmentProblem, ForLinesUsaTresParaTrocaEUmParaLacuna) {
-
     const std::vector<std::string> antes = {"a", "b"};
     const std::vector<std::string> depois = {"a", "c", "d"};
 
@@ -62,7 +58,6 @@ TEST(TokenAlignmentProblem, ForLinesUsaTresParaTrocaEUmParaLacuna) {
 }
 
 TEST(TokenAlignmentProblem, ForWordsUsaUmParaTrocaEUmParaLacuna) {
-
     const std::vector<std::string> antes = {"a", "b"};
     const std::vector<std::string> depois = {"a", "c", "d"};
 

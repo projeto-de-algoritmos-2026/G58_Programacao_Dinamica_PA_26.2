@@ -13,32 +13,30 @@
 #include "estrutura/nucleo/Version.hpp"
 
 namespace estrutura::nucleo {
-class VersionHistory : public IVersionHistory {
+    class VersionHistory : public IVersionHistory {
+        IVersionStore &store;
 
-	IVersionStore& store;
+        const IDiffer &differ;
 
-	const IDiffer& differ;
+        const IClock &clock;
 
-	const IClock& clock;
+        [[nodiscard]] Version find(const std::string &document, int versionNumber) const;
 
-	[[nodiscard]] Version find(const std::string& document, int versionNumber) const;
+    public:
+        VersionHistory(IVersionStore &store, const IDiffer &differ, const IClock &clock);
 
-public:
-	VersionHistory(IVersionStore& store, const IDiffer& differ, const IClock& clock);
+        std::optional<Version> save(const std::string &document, const std::string &text,
+                                    const std::string &message) override;
 
-	std::optional<Version> save(const std::string& document, const std::string& text, const std::string& message) override;
+        [[nodiscard]] std::vector<Version> versions(const std::string &document) const override;
 
-	[[nodiscard]] std::vector<Version> versions(const std::string& document) const override;
+        [[nodiscard]] TextDiff diff(const std::string &document, int fromVersion, int toVersion) const override;
 
-	[[nodiscard]] TextDiff diff(const std::string& document, int fromVersion, int toVersion) const override;
+        [[nodiscard]] TextDiff changesSinceLatest(const std::string &document, const std::string &text) const override;
 
-	[[nodiscard]] TextDiff changesSinceLatest(const std::string& document, const std::string& text) const override;
+        std::optional<Version> restore(const std::string &document, int versionNumber) override;
 
-	std::optional<Version> restore(const std::string& document, int versionNumber) override;
-
-	[[nodiscard]] std::vector<std::string> documents() const override;
-
-};
-
-}  // namespace estrutura::nucleo
+        [[nodiscard]] std::vector<std::string> documents() const override;
+    };
+} // namespace estrutura::nucleo
 #endif

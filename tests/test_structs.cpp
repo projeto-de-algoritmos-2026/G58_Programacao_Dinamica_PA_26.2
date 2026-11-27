@@ -18,7 +18,6 @@ using estrutura::nucleo::TextDiff;
 using estrutura::nucleo::WordEdit;
 
 TEST(AlignmentColumn, MesmosIndicesSaoIguais) {
-
     AlignmentColumn colunaA;
     colunaA.xIndex = 1;
     colunaA.yIndex = 1;
@@ -31,7 +30,6 @@ TEST(AlignmentColumn, MesmosIndicesSaoIguais) {
 }
 
 TEST(AlignmentColumn, LacunaEmXDiferenteDeIndiceZero) {
-
     AlignmentColumn colunaA;
     colunaA.xIndex = 0;
     colunaA.yIndex = 1;
@@ -43,7 +41,6 @@ TEST(AlignmentColumn, LacunaEmXDiferenteDeIndiceZero) {
 }
 
 TEST(AlignmentColumn, LacunaEmYDiferenteDeIndiceZero) {
-
     AlignmentColumn colunaA;
     colunaA.xIndex = 1;
     colunaA.yIndex = 0;
@@ -55,7 +52,6 @@ TEST(AlignmentColumn, LacunaEmYDiferenteDeIndiceZero) {
 }
 
 TEST(TextDiff, UmaKeptDuasAdded) {
-
     LineEdit lineEditA;
     lineEditA.kind = EditKind::Kept;
 
@@ -75,11 +71,9 @@ TEST(TextDiff, UmaKeptDuasAdded) {
     EXPECT_EQ(textDiff.count(EditKind::Kept), 1);
     EXPECT_EQ(textDiff.count(EditKind::Added), 2);
     EXPECT_EQ(textDiff.count(EditKind::Removed), 0);
-
 }
 
 TEST(TextDiff, SoLinhasKept) {
-
     LineEdit lineEditA;
     lineEditA.kind = EditKind::Kept;
 
@@ -97,11 +91,9 @@ TEST(TextDiff, SoLinhasKept) {
     };
 
     EXPECT_TRUE(textDiff.isIdentical());
-
 }
 
 TEST(TextDiff, UmaKeptNoMeioDeDuasAdded) {
-
     LineEdit lineEditA;
     lineEditA.kind = EditKind::Added;
 
@@ -119,20 +111,16 @@ TEST(TextDiff, UmaKeptNoMeioDeDuasAdded) {
     };
 
     EXPECT_FALSE(textDiff.isIdentical());
-
 }
 
 TEST(TextDiff, DiffSemNenhumaLinha) {
-
     TextDiff textDiff;
-    textDiff.lines = { };
+    textDiff.lines = {};
 
     EXPECT_TRUE(textDiff.isIdentical());
-
 }
 
 TEST(TextDiff, UmaAddedNoMeioDeDuasKept) {
-
     LineEdit lineEditA;
     lineEditA.kind = EditKind::Kept;
 
@@ -150,5 +138,4 @@ TEST(TextDiff, UmaAddedNoMeioDeDuasKept) {
     };
 
     EXPECT_FALSE(textDiff.isIdentical());
-
 }

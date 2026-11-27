@@ -9,34 +9,40 @@
 #include "estrutura/alinhamento/IAlignmentProblem.hpp"
 
 class ExplicitCostProblem : public estrutura::alinhamento::IAlignmentProblem {
-
-    std::vector<std::vector<int>> pairCosts;
+    std::vector<std::vector<int> > pairCosts;
     std::vector<int> unmatchedXCosts;
     std::vector<int> unmatchedYCosts;
 
 public:
-    ExplicitCostProblem(std::vector<std::vector<int>> pairCosts, std::vector<int> unmatchedXCosts, std::vector<int> unmatchedYCosts)
-        : pairCosts(std::move(pairCosts)), unmatchedXCosts(std::move(unmatchedXCosts)), unmatchedYCosts(std::move(unmatchedYCosts)) {}
+    ExplicitCostProblem(std::vector<std::vector<int> > pairCosts, std::vector<int> unmatchedXCosts,
+                        std::vector<int> unmatchedYCosts)
+        : pairCosts(std::move(pairCosts)), unmatchedXCosts(std::move(unmatchedXCosts)),
+          unmatchedYCosts(std::move(unmatchedYCosts)) {
+    }
 
     [[nodiscard]] int lengthX() const override { return static_cast<int>(unmatchedXCosts.size()); }
     [[nodiscard]] int lengthY() const override { return static_cast<int>(unmatchedYCosts.size()); }
-    [[nodiscard]] int pairCost(const int xIndex, const int yIndex) const override { return pairCosts.at(xIndex).at(yIndex); }
+
+    [[nodiscard]] int pairCost(const int xIndex, const int yIndex) const override {
+        return pairCosts.at(xIndex).at(yIndex);
+    }
+
     [[nodiscard]] int unmatchedXCost(const int xIndex) const override { return unmatchedXCosts.at(xIndex); }
     [[nodiscard]] int unmatchedYCost(const int yIndex) const override { return unmatchedYCosts.at(yIndex); }
 };
 
 class RandomProblemGenerator {
-
     std::mt19937 engine;
 
 public:
-    explicit RandomProblemGenerator(const unsigned seed) : engine(seed) {}
+    explicit RandomProblemGenerator(const unsigned seed) : engine(seed) {
+    }
 
     int between(const int minimum, const int maximum) {
         return minimum + static_cast<int>(engine() % static_cast<unsigned>(maximum - minimum + 1));
     }
 
-    std::string text(const int maxLength, const std::string& alphabet) {
+    std::string text(const int maxLength, const std::string &alphabet) {
         std::string result;
         const int length = between(0, maxLength);
         for (int position = 0; position < length; ++position) {
@@ -49,27 +55,27 @@ public:
         const int lengthX = between(0, maxLength);
         const int lengthY = between(0, maxLength);
 
-        std::vector<std::vector<int>> pairCosts(lengthX, std::vector<int>(lengthY));
-        for (std::vector<int>& row : pairCosts) {
-            for (int& cost : row) {
+        std::vector<std::vector<int> > pairCosts(lengthX, std::vector<int>(lengthY));
+        for (std::vector<int> &row: pairCosts) {
+            for (int &cost: row) {
                 cost = between(0, maxCost);
             }
         }
 
         std::vector<int> unmatchedXCosts(lengthX);
-        for (int& cost : unmatchedXCosts) {
+        for (int &cost: unmatchedXCosts) {
             cost = between(0, maxCost);
         }
 
         std::vector<int> unmatchedYCosts(lengthY);
-        for (int& cost : unmatchedYCosts) {
+        for (int &cost: unmatchedYCosts) {
             cost = between(0, maxCost);
         }
 
         return {std::move(pairCosts), std::move(unmatchedXCosts), std::move(unmatchedYCosts)};
     }
 
-    std::vector<std::string> lines(const int maxCount, const std::vector<std::string>& vocabulary) {
+    std::vector<std::string> lines(const int maxCount, const std::vector<std::string> &vocabulary) {
         std::vector<std::string> result;
         const int count = between(0, maxCount);
         for (int position = 0; position < count; ++position) {

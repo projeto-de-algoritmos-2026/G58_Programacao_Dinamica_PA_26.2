@@ -20,33 +20,33 @@ using estrutura::terminal::TerminalUI;
 using testing::Return;
 
 TEST(Esqueleto, AlinhamentoNovoComecaComCustoZero) {
-	const Alignment alignment{};
+    const Alignment alignment{};
 
-	EXPECT_EQ(alignment.cost, 0);
-	EXPECT_TRUE(alignment.columns.empty());
+    EXPECT_EQ(alignment.cost, 0);
+    EXPECT_TRUE(alignment.columns.empty());
 }
 
 TEST(Esqueleto, AsClassesDaEntregaSeMontamComoNoMain) {
-	const NeedlemanWunschAligner aligner;
-	const AlignmentDiffer differ(aligner);
-	const TerminalUI terminal(differ, std::cin, std::cout);
+    const NeedlemanWunschAligner aligner;
+    const AlignmentDiffer differ(aligner);
+    const TerminalUI terminal(differ, std::cin, std::cout);
 
-	SUCCEED();
+    SUCCEED();
 }
 
 TEST(Esqueleto, OHistoricoSeMontaComMocks) {
-	mocks::MockVersionStore store;
-	mocks::MockDiffer differ;
-	mocks::MockClock clock;
+    mocks::MockVersionStore store;
+    mocks::MockDiffer differ;
+    mocks::MockClock clock;
 
-	VersionHistory history(store, differ, clock);
+    VersionHistory history(store, differ, clock);
 
-	SUCCEED();
+    SUCCEED();
 }
 
 TEST(Esqueleto, UmMockDevolveOQueOTesteManda) {
-	mocks::MockClock clock;
-	EXPECT_CALL(clock, now()).WillOnce(Return("2026-11-18 11:24"));
+    mocks::MockClock clock;
+    EXPECT_CALL(clock, now()).WillOnce(Return("2026-11-18 11:24"));
 
-	EXPECT_EQ(clock.now(), "2026-11-18 11:24");
+    EXPECT_EQ(clock.now(), "2026-11-18 11:24");
 }

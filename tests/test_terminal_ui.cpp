@@ -26,14 +26,14 @@ using testing::Not;
 using testing::Return;
 
 namespace {
-    std::string lerArquivo(const std::string& caminho) {
+    std::string lerArquivo(const std::string &caminho) {
         std::ifstream arquivo(caminho);
         std::ostringstream conteudo;
         conteudo << arquivo.rdbuf();
         return conteudo.str();
     }
 
-    LineEdit linha(const EditKind kind, const std::string& antes, const std::string& depois) {
+    LineEdit linha(const EditKind kind, const std::string &antes, const std::string &depois) {
         LineEdit edit;
         edit.kind = kind;
         edit.beforeText = antes;
@@ -41,7 +41,7 @@ namespace {
         return edit;
     }
 
-    WordEdit palavra(const EditKind kind, const std::string& antes, const std::string& depois) {
+    WordEdit palavra(const EditKind kind, const std::string &antes, const std::string &depois) {
         WordEdit edit;
         edit.kind = kind;
         edit.before = antes;
@@ -56,14 +56,14 @@ protected:
     testing::StrictMock<MockDiffer> differ;
     std::ostringstream saida;
 
-    std::string rodar(const std::string& comandos) {
+    std::string rodar(const std::string &comandos) {
         std::istringstream entrada(comandos);
         const TerminalUI terminal(differ, entrada, saida);
         terminal.run();
         return saida.str();
     }
 
-    std::string compararDevolvendo(const TextDiff& diffDevolvido) {
+    std::string compararDevolvendo(const TextDiff &diffDevolvido) {
         EXPECT_CALL(differ, diff(_, _)).WillOnce(Return(diffDevolvido));
 
         const std::string caminho1 = std::string(EXEMPLOS_DIR) + "/rascunho-1.txt";
@@ -75,7 +75,6 @@ protected:
 TEST_F(TerminalUITest, FimDaEntradaEncerra) {
     const std::string resultado = rodar("");
     EXPECT_THAT(resultado, Not(HasSubstr("desconhecido")));
-
 }
 
 TEST_F(TerminalUITest, AjudaListaOsComandos) {
@@ -111,7 +110,6 @@ TEST_F(TerminalUITest, ArquivoQueNaoAbreAvisaEContinua) {
 }
 
 TEST_F(TerminalUITest, CompararLeOsDoisArquivosEChamaODiffer) {
-
     const std::string caminho1 = std::string(EXEMPLOS_DIR) + "/rascunho-1.txt";
     const std::string caminho2 = std::string(EXEMPLOS_DIR) + "/rascunho-2.txt";
 
@@ -124,7 +122,8 @@ TEST_F(TerminalUITest, CompararLeOsDoisArquivosEChamaODiffer) {
 
 TEST_F(TerminalUITest, LinhaMantidaComDoisEspacos) {
     TextDiff diff;
-    diff.lines = {linha(EditKind::Kept, "a", "a"),
+    diff.lines = {
+        linha(EditKind::Kept, "a", "a"),
         linha(EditKind::Added, "", "b")
     };
 
@@ -133,14 +132,15 @@ TEST_F(TerminalUITest, LinhaMantidaComDoisEspacos) {
 
 TEST_F(TerminalUITest, ApagadaComMenosEAdicionadaComMais) {
     TextDiff diff;
-    diff.lines = {linha(EditKind::Removed, "b", ""),
-    (linha(EditKind::Added, "", "c"))};
+    diff.lines = {
+        linha(EditKind::Removed, "b", ""),
+        (linha(EditKind::Added, "", "c"))
+    };
 
     EXPECT_THAT(compararDevolvendo(diff), HasSubstr("- b\n+ c\n"));
 }
 
 TEST_F(TerminalUITest, TrocadaMostraAsPalavras) {
-
     LineEdit trocada = linha(EditKind::Changed, "I count one", "I count two");
     trocada.words = {
         palavra(EditKind::Kept, "I", "I"),
@@ -155,7 +155,6 @@ TEST_F(TerminalUITest, TrocadaMostraAsPalavras) {
 }
 
 TEST_F(TerminalUITest, PalavraApagadaEAdicionada) {
-
     LineEdit trocada = linha(EditKind::Changed, "a b", "a c");
     trocada.words = {
         palavra(EditKind::Kept, "a", "a"),
@@ -170,7 +169,6 @@ TEST_F(TerminalUITest, PalavraApagadaEAdicionada) {
 }
 
 TEST_F(TerminalUITest, DiffIdenticoAvisa) {
-
     LineEdit trocada = linha(EditKind::Kept, "a b", "a b");
     trocada.words = {
         palavra(EditKind::Kept, "a", "a"),

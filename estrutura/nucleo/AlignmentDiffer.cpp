@@ -6,23 +6,19 @@
 #include "estrutura/alinhamento/Alignment.hpp"
 
 namespace estrutura::nucleo {
+    AlignmentDiffer::AlignmentDiffer(const alinhamento::IAligner &aligner)
+        : aligner(aligner) {
+    }
 
-AlignmentDiffer::AlignmentDiffer(const alinhamento::IAligner& aligner)
-	: aligner(aligner) {
-}
+    TextDiff AlignmentDiffer::diff(const std::string &before, const std::string &after) const {
+        const std::vector<std::string> beforeLines = TextSplitter::lines(before);
+        const std::vector<std::string> afterLines = TextSplitter::lines(after);
 
-TextDiff AlignmentDiffer::diff(const std::string& before, const std::string& after) const {
+        const TokenAlignmentProblem lineProblem = TokenAlignmentProblem::forLines(beforeLines, afterLines);
 
-	const std::vector<std::string> beforeLines = TextSplitter::lines(before);
-	const std::vector<std::string> afterLines = TextSplitter::lines(after);
+        const alinhamento::Alignment lineAlignment = aligner.align(lineProblem);
 
-	const TokenAlignmentProblem lineProblem = TokenAlignmentProblem::forLines(beforeLines, afterLines);
-
-	const alinhamento::Alignment lineAlignment = aligner.align(lineProblem);
-
-	const DiffAssembler assembler(aligner);
-	return assembler.assemble(beforeLines, afterLines, lineAlignment);
-
-}
-
-}  // namespace estrutura::nucleo
+        const DiffAssembler assembler(aligner);
+        return assembler.assemble(beforeLines, afterLines, lineAlignment);
+    }
+} // namespace estrutura::nucleo

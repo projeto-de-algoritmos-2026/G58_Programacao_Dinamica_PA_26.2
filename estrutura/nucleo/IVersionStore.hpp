@@ -7,17 +7,15 @@
 #include "estrutura/nucleo/Version.hpp"
 
 namespace estrutura::nucleo {
-class IVersionStore {
-public:
-	virtual ~IVersionStore() = default;
+    class IVersionStore {
+    public:
+        virtual ~IVersionStore() = default;
 
-	virtual void append(const std::string& document, const Version& version) = 0;
+        virtual void append(const std::string &document, const Version &version) = 0;
 
-	[[nodiscard]] virtual std::vector<Version> versions(const std::string& document) const = 0;
+        [[nodiscard]] virtual std::vector<Version> versions(const std::string &document) const = 0;
 
-	[[nodiscard]] virtual std::vector<std::string> documents() const = 0;
-
-};
-
-}  // namespace estrutura::nucleo
+        [[nodiscard]] virtual std::vector<std::string> documents() const = 0;
+    };
+} // namespace estrutura::nucleo
 #endif

@@ -24,7 +24,8 @@ protected:
     NeedlemanWunschAligner aligner;
     DiffAssembler assembler{aligner};
 
-    TextDiff assemble(const std::vector<std::string>& antes, const std::vector<std::string>& depois, const std::vector<AlignmentColumn>& colunas) {
+    TextDiff assemble(const std::vector<std::string> &antes, const std::vector<std::string> &depois,
+                      const std::vector<AlignmentColumn> &colunas) {
         Alignment alignment;
         alignment.columns = colunas;
         return assembler.assemble(antes, depois, alignment);
@@ -40,7 +41,7 @@ TEST_F(DiffAssemblerTest, ColunaComDoisIndicesViraKept) {
     const TextDiff resultado = assemble({"a"}, {"a"}, {{0, 0}});
     ASSERT_EQ(resultado.lines.size(), 1u);
 
-    const LineEdit& linha = resultado.lines[0];
+    const LineEdit &linha = resultado.lines[0];
 
     EXPECT_EQ(linha.kind, EditKind::Kept);
     EXPECT_EQ(linha.beforeIndex, 0);
@@ -53,7 +54,7 @@ TEST_F(DiffAssemblerTest, SoIndiceAntesViraRemoved) {
     const TextDiff resultado = assemble({"a"}, {}, {{0, std::nullopt}});
     ASSERT_EQ(resultado.lines.size(), 1u);
 
-    const LineEdit& linha = resultado.lines[0];
+    const LineEdit &linha = resultado.lines[0];
 
     EXPECT_EQ(linha.kind, EditKind::Removed);
     EXPECT_EQ(linha.beforeIndex, 0);
@@ -66,7 +67,7 @@ TEST_F(DiffAssemblerTest, SoIndiceDepoisViraAdded) {
     const TextDiff resultado = assemble({}, {"a"}, {{std::nullopt, 0}});
     ASSERT_EQ(resultado.lines.size(), 1u);
 
-    const LineEdit& linha = resultado.lines[0];
+    const LineEdit &linha = resultado.lines[0];
 
     EXPECT_EQ(linha.kind, EditKind::Added);
     EXPECT_EQ(linha.beforeIndex, std::nullopt);
@@ -92,7 +93,7 @@ TEST_F(DiffAssemblerTest, LinhasParecidasViramChanged) {
     const TextDiff resultado = assemble({"a b c"}, {"a b d"}, {{0, std::nullopt}, {std::nullopt, 0}});
     ASSERT_EQ(resultado.lines.size(), 1u);
 
-    const LineEdit& linha = resultado.lines[0];
+    const LineEdit &linha = resultado.lines[0];
 
     EXPECT_EQ(linha.kind, EditKind::Changed);
     EXPECT_EQ(linha.beforeIndex, 0);
@@ -105,7 +106,7 @@ TEST_F(DiffAssemblerTest, ChangedGuardaAsPalavras) {
     const TextDiff resultado = assemble({"a b c"}, {"a b d"}, {{0, std::nullopt}, {std::nullopt, 0}});
     ASSERT_EQ(resultado.lines.size(), 1u);
 
-    const LineEdit& linha = resultado.lines[0];
+    const LineEdit &linha = resultado.lines[0];
 
     ASSERT_EQ(linha.words.size(), 3u);
 
@@ -134,7 +135,8 @@ TEST_F(DiffAssemblerTest, LinhasSemNadaEmComumContinuamSeparadas) {
 }
 
 TEST_F(DiffAssemblerTest, DuasApagadasEUmaAdicionada) {
-    const TextDiff resultado = assemble({"a b c", "x y z"}, {"a b d"}, {{0, std::nullopt},  {1, std::nullopt}, {std::nullopt, 0}});
+    const TextDiff resultado = assemble({"a b c", "x y z"}, {"a b d"},
+                                        {{0, std::nullopt}, {1, std::nullopt}, {std::nullopt, 0}});
     ASSERT_EQ(resultado.lines.size(), 2u);
 
     EXPECT_EQ(resultado.lines[0].kind, EditKind::Changed);
@@ -146,7 +148,7 @@ TEST_F(DiffAssemblerTest, DuasApagadasEUmaAdicionada) {
 }
 
 TEST_F(DiffAssemblerTest, NuncaPareiaAtravesDeUmaKept) {
-    const TextDiff resultado = assemble({"a b c", "x"}, {"x", "a b d"}, {{0, std::nullopt},  {1, 0}, {std::nullopt, 1}});
+    const TextDiff resultado = assemble({"a b c", "x"}, {"x", "a b d"}, {{0, std::nullopt}, {1, 0}, {std::nullopt, 1}});
     ASSERT_EQ(resultado.lines.size(), 3u);
 
     EXPECT_EQ(resultado.lines[0].kind, EditKind::Removed);
@@ -161,11 +163,10 @@ TEST_F(DiffAssemblerTest, NuncaPareiaAtravesDeUmaKept) {
 }
 
 TEST_F(DiffAssemblerTest, PalavraAdicionadaGuardaODepois) {
-
-    const TextDiff resultado = assemble({"a b"}, {"a x b"}, {{0, std::nullopt},  {std::nullopt, 0}});
+    const TextDiff resultado = assemble({"a b"}, {"a x b"}, {{0, std::nullopt}, {std::nullopt, 0}});
     ASSERT_EQ(resultado.lines.size(), 1u);
 
-    const LineEdit& linha = resultado.lines[0];
+    const LineEdit &linha = resultado.lines[0];
 
     ASSERT_EQ(linha.words.size(), 3u);
 

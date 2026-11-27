@@ -9,20 +9,17 @@
 #include "estrutura/nucleo/Version.hpp"
 
 namespace estrutura::adaptadores {
-class FolderVersionStore : public nucleo::IVersionStore {
+    class FolderVersionStore : public nucleo::IVersionStore {
+        std::filesystem::path root;
 
-	std::filesystem::path root;
+    public:
+        explicit FolderVersionStore(const std::filesystem::path &root);
 
-public:
-	explicit FolderVersionStore(const std::filesystem::path& root);
+        void append(const std::string &document, const nucleo::Version &version) override;
 
-	void append(const std::string& document, const nucleo::Version& version) override;
+        [[nodiscard]] std::vector<nucleo::Version> versions(const std::string &document) const override;
 
-	[[nodiscard]] std::vector<nucleo::Version> versions(const std::string& document) const override;
-
-	[[nodiscard]] std::vector<std::string> documents() const override;
-
-};
-
-}  // namespace estrutura::adaptadores
+        [[nodiscard]] std::vector<std::string> documents() const override;
+    };
+} // namespace estrutura::adaptadores
 #endif

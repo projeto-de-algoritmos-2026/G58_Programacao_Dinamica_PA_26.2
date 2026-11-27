@@ -4,17 +4,14 @@
 #include <string>
 
 namespace estrutura::nucleo {
-struct Version {
+    struct Version {
+        int number = 0;
 
-	int number = 0;
+        std::string message;
 
-	std::string message;
+        std::string createdAt;
 
-	std::string createdAt;
-
-	std::string text;
-
-};
-
-}  // namespace estrutura::nucleo
+        std::string text;
+    };
+} // namespace estrutura::nucleo
 #endif

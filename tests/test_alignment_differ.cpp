@@ -25,7 +25,6 @@ protected:
 };
 
 TEST_F(AlignmentDifferTest, TextosIguaisSoTemLinhasKept) {
-
     const TextDiff resultado = differ.diff("a\nb", "a\nb");
 
     ASSERT_EQ(resultado.lines.size(), 2u);
@@ -34,33 +33,27 @@ TEST_F(AlignmentDifferTest, TextosIguaisSoTemLinhasKept) {
     EXPECT_EQ(resultado.lines[1].kind, EditKind::Kept);
 
     EXPECT_TRUE(resultado.isIdentical());
-
 }
 
 TEST_F(AlignmentDifferTest, AntesVazioTudoAdded) {
-
     const TextDiff resultado = differ.diff("", "a\nb");
 
     ASSERT_EQ(resultado.lines.size(), 2u);
 
     EXPECT_EQ(resultado.lines[0].kind, EditKind::Added);
     EXPECT_EQ(resultado.lines[1].kind, EditKind::Added);
-
 }
 
 TEST_F(AlignmentDifferTest, DepoisVazioTudoRemoved) {
-
     const TextDiff resultado = differ.diff("a\nb", "");
 
     ASSERT_EQ(resultado.lines.size(), 2u);
 
     EXPECT_EQ(resultado.lines[0].kind, EditKind::Removed);
     EXPECT_EQ(resultado.lines[1].kind, EditKind::Removed);
-
 }
 
 TEST_F(AlignmentDifferTest, LinhaMovidaViraApagadaMaisAdicionada) {
-
     const TextDiff resultado = differ.diff("a\nb", "b\na");
 
     ASSERT_EQ(resultado.lines.size(), 3u);
@@ -68,5 +61,4 @@ TEST_F(AlignmentDifferTest, LinhaMovidaViraApagadaMaisAdicionada) {
     EXPECT_EQ(resultado.count(EditKind::Kept), 1);
     EXPECT_EQ(resultado.count(EditKind::Removed), 1);
     EXPECT_EQ(resultado.count(EditKind::Added), 1);
-
 }

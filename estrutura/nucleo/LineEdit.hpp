@@ -9,21 +9,18 @@
 #include "estrutura/nucleo/WordEdit.hpp"
 
 namespace estrutura::nucleo {
-struct LineEdit {
+    struct LineEdit {
+        EditKind kind = EditKind::Kept;
 
-	EditKind kind = EditKind::Kept;
+        std::optional<int> beforeIndex;
 
-	std::optional<int> beforeIndex;
+        std::optional<int> afterIndex;
 
-	std::optional<int> afterIndex;
+        std::string beforeText;
 
-	std::string beforeText;
+        std::string afterText;
 
-	std::string afterText;
-
-	std::vector<WordEdit> words;
-
-};
-
-}  // namespace estrutura::nucleo
+        std::vector<WordEdit> words;
+    };
+} // namespace estrutura::nucleo
 #endif

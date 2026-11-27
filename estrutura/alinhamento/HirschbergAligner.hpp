@@ -7,16 +7,13 @@
 #include "estrutura/alinhamento/SubProblem.hpp"
 
 namespace estrutura::alinhamento {
-class HirschbergAligner : public IAligner {
+    class HirschbergAligner : public IAligner {
+        void alignRange(const SubProblem &subProblem, std::vector<AlignmentColumn> &columns) const;
 
-	void alignRange(const SubProblem& subProblem, std::vector<AlignmentColumn>& columns) const;
+        [[nodiscard]] static int splitPoint(const SubProblem &subProblem);
 
-	[[nodiscard]] static int splitPoint(const SubProblem& subProblem);
-
-public:
-	[[nodiscard]] Alignment align(const IAlignmentProblem& problem) const override;
-
-};
-
-}  // namespace estrutura::alinhamento
+    public:
+        [[nodiscard]] Alignment align(const IAlignmentProblem &problem) const override;
+    };
+} // namespace estrutura::alinhamento
 #endif

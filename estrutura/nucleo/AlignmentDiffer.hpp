@@ -8,16 +8,13 @@
 #include "estrutura/nucleo/TextDiff.hpp"
 
 namespace estrutura::nucleo {
-class AlignmentDiffer : public IDiffer {
+    class AlignmentDiffer : public IDiffer {
+        const alinhamento::IAligner &aligner;
 
-	const alinhamento::IAligner& aligner;
+    public:
+        explicit AlignmentDiffer(const alinhamento::IAligner &aligner);
 
-public:
-	explicit AlignmentDiffer(const alinhamento::IAligner& aligner);
-
-	[[nodiscard]] TextDiff diff(const std::string& before, const std::string& after) const override;
-
-};
-
-}  // namespace estrutura::nucleo
+        [[nodiscard]] TextDiff diff(const std::string &before, const std::string &after) const override;
+    };
+} // namespace estrutura::nucleo
 #endif

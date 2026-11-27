@@ -129,31 +129,29 @@ TEST(NeedlemanWunschContraForcaBruta, CustoSorteadoParaCadaParECadaLacuna) {
 }
 
 namespace {
+    LineEdit diffLine(const EditKind kind, const std::optional<int> beforeIndex, const std::optional<int> afterIndex,
+                      const std::string &beforeText, const std::string &afterText) {
+        LineEdit line;
+        line.kind = kind;
+        line.beforeIndex = beforeIndex;
+        line.afterIndex = afterIndex;
+        line.beforeText = beforeText;
+        line.afterText = afterText;
+        return line;
+    }
 
-LineEdit diffLine(const EditKind kind, const std::optional<int> beforeIndex, const std::optional<int> afterIndex,
-                  const std::string& beforeText, const std::string& afterText) {
-    LineEdit line;
-    line.kind = kind;
-    line.beforeIndex = beforeIndex;
-    line.afterIndex = afterIndex;
-    line.beforeText = beforeText;
-    line.afterText = afterText;
-    return line;
-}
-
-// "a" mantida, "b" apagada, "c" adicionada e "d" trocada por "e".
-TextDiff umDiffDeCadaTipo() {
-    TextDiff diff;
-    diff.lines = {
-        diffLine(EditKind::Kept, 0, 0, "a", "a"),
-        diffLine(EditKind::Removed, 1, std::nullopt, "b", ""),
-        diffLine(EditKind::Added, std::nullopt, 1, "", "c"),
-        diffLine(EditKind::Changed, 2, 2, "d", "e"),
-    };
-    return diff;
-}
-
-}  // namespace
+    // "a" mantida, "b" apagada, "c" adicionada e "d" trocada por "e".
+    TextDiff umDiffDeCadaTipo() {
+        TextDiff diff;
+        diff.lines = {
+            diffLine(EditKind::Kept, 0, 0, "a", "a"),
+            diffLine(EditKind::Removed, 1, std::nullopt, "b", ""),
+            diffLine(EditKind::Added, std::nullopt, 1, "", "c"),
+            diffLine(EditKind::Changed, 2, 2, "d", "e"),
+        };
+        return diff;
+    }
+} // namespace
 
 TEST(DiffOracle, CadaLadoJuntaAsLinhasQueExistemNele) {
     const TextDiff diff = umDiffDeCadaTipo();
@@ -200,21 +198,18 @@ TEST(DiffOracle, JuntarLinhasDesfazOTextSplitter) {
 }
 
 namespace {
+    const std::vector<std::string> vocabularioDeLinhas = {"a", "b", "c", "d"};
 
-const std::vector<std::string> vocabularioDeLinhas = {"a", "b", "c", "d"};
-
-std::string descrever(const std::vector<std::string>& linhas) {
-    std::string texto;
-    for (std::size_t posicao = 0; posicao < linhas.size(); ++posicao) {
-        texto += (posicao > 0 ? " | " : "") + linhas[posicao];
+    std::string descrever(const std::vector<std::string> &linhas) {
+        std::string texto;
+        for (std::size_t posicao = 0; posicao < linhas.size(); ++posicao) {
+            texto += (posicao > 0 ? " | " : "") + linhas[posicao];
+        }
+        return "[" + texto + "]";
     }
-    return "[" + texto + "]";
-}
-
-}  // namespace
+} // namespace
 
 TEST(AlignmentDifferContraOraculo, ReconstroiAsDuasVersoes) {
-
     RandomProblemGenerator sorteio(2611);
     const NeedlemanWunschAligner aligner;
     const AlignmentDiffer differ(aligner);
@@ -222,7 +217,8 @@ TEST(AlignmentDifferContraOraculo, ReconstroiAsDuasVersoes) {
     for (int caso = 0; caso < 500; ++caso) {
         const std::vector<std::string> antes = sorteio.lines(8, vocabularioDeLinhas);
         const std::vector<std::string> depois = sorteio.lines(8, vocabularioDeLinhas);
-        SCOPED_TRACE("caso " + std::to_string(caso) + ": antes = " + descrever(antes) + ", depois = " + descrever(depois));
+        SCOPED_TRACE(
+            "caso " + std::to_string(caso) + ": antes = " + descrever(antes) + ", depois = " + descrever(depois));
 
         const TextDiff diff = differ.diff(oraculo::joinLines(antes), oraculo::joinLines(depois));
 
@@ -233,7 +229,6 @@ TEST(AlignmentDifferContraOraculo, ReconstroiAsDuasVersoes) {
 }
 
 TEST(AlignmentDifferContraOraculo, FazOMinimoDeMudancas) {
-
     RandomProblemGenerator sorteio(2411);
     const NeedlemanWunschAligner aligner;
     const AlignmentDiffer differ(aligner);
@@ -241,7 +236,8 @@ TEST(AlignmentDifferContraOraculo, FazOMinimoDeMudancas) {
     for (int caso = 0; caso < 500; ++caso) {
         const std::vector<std::string> antes = sorteio.lines(8, vocabularioDeLinhas);
         const std::vector<std::string> depois = sorteio.lines(8, vocabularioDeLinhas);
-        SCOPED_TRACE("caso " + std::to_string(caso) + ": antes = " + descrever(antes) + ", depois = " + descrever(depois));
+        SCOPED_TRACE(
+            "caso " + std::to_string(caso) + ": antes = " + descrever(antes) + ", depois = " + descrever(depois));
 
         const TextDiff diff = differ.diff(oraculo::joinLines(antes), oraculo::joinLines(depois));
         const int totalDeLinhas = static_cast<int>(antes.size() + depois.size());

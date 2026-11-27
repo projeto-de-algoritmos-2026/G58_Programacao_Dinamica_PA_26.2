@@ -7,15 +7,12 @@
 #include "estrutura/nucleo/LineEdit.hpp"
 
 namespace estrutura::nucleo {
-struct TextDiff {
+    struct TextDiff {
+        std::vector<LineEdit> lines;
 
-	std::vector<LineEdit> lines;
+        [[nodiscard]] int count(EditKind kind) const;
 
-	[[nodiscard]] int count(EditKind kind) const;
-
-	[[nodiscard]] bool isIdentical() const;
-
-};
-
-}  // namespace estrutura::nucleo
+        [[nodiscard]] bool isIdentical() const;
+    };
+} // namespace estrutura::nucleo
 #endif

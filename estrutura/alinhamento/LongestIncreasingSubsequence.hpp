@@ -4,13 +4,11 @@
 #include <vector>
 
 namespace estrutura::alinhamento {
-class LongestIncreasingSubsequence {
-public:
-	[[nodiscard]] static std::vector<int> of(const std::vector<int>& values);
+    class LongestIncreasingSubsequence {
+    public:
+        [[nodiscard]] static std::vector<int> of(const std::vector<int> &values);
 
-	[[nodiscard]] static int lengthQuadratic(const std::vector<int>& values);
-
-};
-
-}  // namespace estrutura::alinhamento
+        [[nodiscard]] static int lengthQuadratic(const std::vector<int> &values);
+    };
+} // namespace estrutura::alinhamento
 #endif

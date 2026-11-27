@@ -5,13 +5,11 @@
 #include "estrutura/alinhamento/IAlignmentProblem.hpp"
 
 namespace estrutura::alinhamento {
-class IAligner {
-public:
-	virtual ~IAligner() = default;
+    class IAligner {
+    public:
+        virtual ~IAligner() = default;
 
-	[[nodiscard]] virtual Alignment align(const IAlignmentProblem& problem) const = 0;
-
-};
-
-}  // namespace estrutura::alinhamento
+        [[nodiscard]] virtual Alignment align(const IAlignmentProblem &problem) const = 0;
+    };
+} // namespace estrutura::alinhamento
 #endif

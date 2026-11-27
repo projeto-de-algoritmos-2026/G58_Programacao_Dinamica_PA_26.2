@@ -4,13 +4,11 @@
 #include <string>
 
 namespace estrutura::nucleo {
-class IClock {
-public:
-	virtual ~IClock() = default;
+    class IClock {
+    public:
+        virtual ~IClock() = default;
 
-	[[nodiscard]] virtual std::string now() const = 0;
-
-};
-
-}  // namespace estrutura::nucleo
+        [[nodiscard]] virtual std::string now() const = 0;
+    };
+} // namespace estrutura::nucleo
 #endif

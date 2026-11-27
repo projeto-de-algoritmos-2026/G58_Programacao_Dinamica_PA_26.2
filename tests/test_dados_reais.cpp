@@ -26,7 +26,7 @@ protected:
     NeedlemanWunschAligner aligner;
     AlignmentDiffer differ{aligner};
 
-    TextDiff compararExemplos(const std::string& antes, const std::string& depois) const {
+    TextDiff compararExemplos(const std::string &antes, const std::string &depois) const {
         return differ.diff(arquivos::lerArquivo(arquivos::exemplo(antes)),
                            arquivos::lerArquivo(arquivos::exemplo(depois)));
     }
@@ -49,17 +49,17 @@ TEST_F(DadosReaisTest, Rascunho1Contra2MostraOneVirandoTwo) {
     const TextDiff diff = compararExemplos("rascunho-1.txt", "rascunho-2.txt");
     ASSERT_GE(diff.lines.size(), 2u);
 
-    const LineEdit& linha = diff.lines[1];
+    const LineEdit &linha = diff.lines[1];
     EXPECT_EQ(linha.kind, EditKind::Changed);
     EXPECT_EQ(linha.beforeText, "I count the windows, one by one");
     EXPECT_EQ(linha.afterText, "I count the windows, two by two");
 
     ASSERT_EQ(linha.words.size(), 7u);
-    for (const std::size_t posicao : {0u, 1u, 2u, 3u, 5u}) {
+    for (const std::size_t posicao: {0u, 1u, 2u, 3u, 5u}) {
         SCOPED_TRACE("palavra " + std::to_string(posicao));
         EXPECT_EQ(linha.words[posicao].kind, EditKind::Kept);
     }
-    for (const std::size_t posicao : {4u, 6u}) {
+    for (const std::size_t posicao: {4u, 6u}) {
         SCOPED_TRACE("palavra " + std::to_string(posicao));
         EXPECT_EQ(linha.words[posicao].kind, EditKind::Changed);
         EXPECT_EQ(linha.words[posicao].before, "one");
@@ -86,7 +86,7 @@ TEST_F(DadosReaisTest, Rascunho2Contra3PalavraAdicionadaNoRefrao) {
     const TextDiff diff = compararExemplos("rascunho-2.txt", "rascunho-3.txt");
     ASSERT_EQ(diff.lines.size(), 14u);
 
-    const LineEdit& linha = diff.lines[13];
+    const LineEdit &linha = diff.lines[13];
     EXPECT_EQ(linha.kind, EditKind::Changed);
     EXPECT_EQ(linha.beforeText, "stay, stay until the morning");
     EXPECT_EQ(linha.afterText, "don't go, not until the morning");
@@ -100,13 +100,13 @@ TEST_F(DadosReaisTest, Rascunho2Contra3PalavraAdicionadaNoRefrao) {
 }
 
 TEST_F(DadosReaisTest, TodoParDeRascunhosRemontaAsDuasVersoes) {
-    const std::vector<std::pair<std::string, std::string>> pares = {
+    const std::vector<std::pair<std::string, std::string> > pares = {
         {"rascunho-1.txt", "rascunho-2.txt"},
         {"rascunho-2.txt", "rascunho-3.txt"},
         {"rascunho-1.txt", "rascunho-3.txt"},
     };
 
-    for (const auto& [antes, depois] : pares) {
+    for (const auto &[antes, depois]: pares) {
         SCOPED_TRACE(antes + " contra " + depois);
         const TextDiff diff = compararExemplos(antes, depois);
 
@@ -117,35 +117,33 @@ TEST_F(DadosReaisTest, TodoParDeRascunhosRemontaAsDuasVersoes) {
 }
 
 namespace {
-
-std::vector<std::string> arquivoGrande() {
-    std::vector<std::string> linhas;
-    for (int numero = 0; numero < 2000; ++numero) {
-        linhas.push_back("linha " + std::to_string(numero));
-    }
-    return linhas;
-}
-
-const std::set<int> linhasEditadas = {100, 500, 900, 1300};
-const std::set<int> linhasApagadas = {300, 700, 1100};
-const std::set<int> novasLinhasAntesDe = {200, 1500, 1800};
-
-std::vector<std::string> arquivoGrandeEditado() {
-    std::vector<std::string> linhas;
-    for (int numero = 0; numero < 2000; ++numero) {
-        if (novasLinhasAntesDe.count(numero) > 0) {
-            linhas.push_back("uma linha nova antes da " + std::to_string(numero));
+    std::vector<std::string> arquivoGrande() {
+        std::vector<std::string> linhas;
+        for (int numero = 0; numero < 2000; ++numero) {
+            linhas.push_back("linha " + std::to_string(numero));
         }
-        if (linhasApagadas.count(numero) > 0) {
-            continue;
-        }
-        const std::string original = "linha " + std::to_string(numero);
-        linhas.push_back(linhasEditadas.count(numero) > 0 ? original + " editada" : original);
+        return linhas;
     }
-    return linhas;
-}
 
-}  // namespace
+    const std::set<int> linhasEditadas = {100, 500, 900, 1300};
+    const std::set<int> linhasApagadas = {300, 700, 1100};
+    const std::set<int> novasLinhasAntesDe = {200, 1500, 1800};
+
+    std::vector<std::string> arquivoGrandeEditado() {
+        std::vector<std::string> linhas;
+        for (int numero = 0; numero < 2000; ++numero) {
+            if (novasLinhasAntesDe.count(numero) > 0) {
+                linhas.push_back("uma linha nova antes da " + std::to_string(numero));
+            }
+            if (linhasApagadas.count(numero) > 0) {
+                continue;
+            }
+            const std::string original = "linha " + std::to_string(numero);
+            linhas.push_back(linhasEditadas.count(numero) > 0 ? original + " editada" : original);
+        }
+        return linhas;
+    }
+} // namespace
 
 TEST_F(DadosReaisTest, ArquivoGrandeComPoucasMudancas) {
     const std::vector<std::string> antes = arquivoGrande();

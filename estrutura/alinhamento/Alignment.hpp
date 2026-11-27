@@ -6,13 +6,10 @@
 #include "estrutura/alinhamento/AlignmentColumn.hpp"
 
 namespace estrutura::alinhamento {
-struct Alignment {
+    struct Alignment {
+        int cost = 0;
 
-	int cost = 0;
-
-	std::vector<AlignmentColumn> columns;
-
-};
-
-}  // namespace estrutura::alinhamento
+        std::vector<AlignmentColumn> columns;
+    };
+} // namespace estrutura::alinhamento
 #endif

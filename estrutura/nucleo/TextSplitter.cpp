@@ -4,38 +4,34 @@
 #include <string>
 
 namespace estrutura::nucleo {
+    std::vector<std::string> TextSplitter::lines(const std::string &text) {
+        std::istringstream textStream(text);
 
-std::vector<std::string> TextSplitter::lines(const std::string& text) {
+        std::string line;
 
-	std::istringstream textStream(text);
+        std::vector<std::string> result;
 
-	std::string line;
+        while (std::getline(textStream, line)) {
+            if (!line.empty() && line.back() == '\r') {
+                line.pop_back();
+            }
+            result.push_back(line);
+        }
 
-	std::vector<std::string> result;
+        return result;
+    }
 
-	while (std::getline(textStream, line)) {
-		if (!line.empty() && line.back() == '\r') {
-			line.pop_back();
-		}
-		result.push_back(line);
-	}
+    std::vector<std::string> TextSplitter::words(const std::string &line) {
+        std::istringstream textStream(line);
 
-	return result;
-}
+        std::string word;
 
-std::vector<std::string> TextSplitter::words(const std::string& line) {
+        std::vector<std::string> result;
 
-	std::istringstream textStream(line);
+        while (textStream >> word) {
+            result.push_back(word);
+        }
 
-	std::string word;
-
-	std::vector<std::string> result;
-
-	while (textStream >> word) {
-		result.push_back(word);
-	}
-
-	return result;
-}
-
-}  // namespace estrutura::nucleo
+        return result;
+    }
+} // namespace estrutura::nucleo

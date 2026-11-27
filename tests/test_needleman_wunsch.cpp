@@ -22,12 +22,10 @@ TEST(NeedlemanWunschAligner, VazioContraVazioCustaZero) {
 
     EXPECT_EQ(result.cost, 0);
     EXPECT_TRUE(result.columns.empty());
-
 }
 
 
 TEST(NeedlemanWunschAligner, VazioContraABCCusta3) {
-
     AlignmentColumn colunaAlinhamentoA;
     colunaAlinhamentoA.yIndex = 0;
 
@@ -37,7 +35,7 @@ TEST(NeedlemanWunschAligner, VazioContraABCCusta3) {
     AlignmentColumn colunaAlinhamentoC;
     colunaAlinhamentoC.yIndex = 2;
 
-    std::vector<AlignmentColumn> colunasEsperadas =  {
+    std::vector<AlignmentColumn> colunasEsperadas = {
         colunaAlinhamentoA,
         colunaAlinhamentoB,
         colunaAlinhamentoC
@@ -54,7 +52,6 @@ TEST(NeedlemanWunschAligner, VazioContraABCCusta3) {
 }
 
 TEST(NeedlemanWunschAligner, ABCContraVazioCusta3) {
-
     AlignmentColumn colunaAlinhamentoA;
     colunaAlinhamentoA.xIndex = 0;
 
@@ -64,7 +61,7 @@ TEST(NeedlemanWunschAligner, ABCContraVazioCusta3) {
     AlignmentColumn colunaAlinhamentoC;
     colunaAlinhamentoC.xIndex = 2;
 
-    std::vector<AlignmentColumn> colunasEsperadas =  {
+    std::vector<AlignmentColumn> colunasEsperadas = {
         colunaAlinhamentoA,
         colunaAlinhamentoB,
         colunaAlinhamentoC
@@ -90,7 +87,6 @@ TEST(NeedlemanWunschAligner, ABCContraABDCusta1) {
 }
 
 TEST(NeedlemanWunschAligner, ABCContraABXCCusta1) {
-
     AlignmentColumn colunaAlinhamentoA;
     colunaAlinhamentoA.xIndex = 0;
     colunaAlinhamentoA.yIndex = 0;
@@ -106,7 +102,7 @@ TEST(NeedlemanWunschAligner, ABCContraABXCCusta1) {
     colunaAlinhamentoD.xIndex = 2;
     colunaAlinhamentoD.yIndex = 3;
 
-    std::vector<AlignmentColumn> colunasEsperadas =  {
+    std::vector<AlignmentColumn> colunasEsperadas = {
         colunaAlinhamentoA,
         colunaAlinhamentoB,
         colunaAlinhamentoC,
@@ -124,7 +120,6 @@ TEST(NeedlemanWunschAligner, ABCContraABXCCusta1) {
 }
 
 TEST(NeedlemanWunschAligner, SequenciasIguaisCustamZero) {
-
     AlignmentColumn colunaAlinhamentoA;
     colunaAlinhamentoA.xIndex = 0;
     colunaAlinhamentoA.yIndex = 0;
@@ -137,7 +132,7 @@ TEST(NeedlemanWunschAligner, SequenciasIguaisCustamZero) {
     colunaAlinhamentoC.xIndex = 2;
     colunaAlinhamentoC.yIndex = 2;
 
-    std::vector<AlignmentColumn> colunasEsperadas =  {
+    std::vector<AlignmentColumn> colunasEsperadas = {
         colunaAlinhamentoA,
         colunaAlinhamentoB,
         colunaAlinhamentoC
@@ -172,14 +167,13 @@ TEST(NeedlemanWunschAligner, KittenContraSittingCusta3) {
 }
 
 TEST(NeedlemanWunschAligner, AContraBAlpha5Delta1Custa2) {
-
     AlignmentColumn colunaAlinhamentoA;
     colunaAlinhamentoA.yIndex = 0;
 
     AlignmentColumn colunaAlinhamentoB;
     colunaAlinhamentoB.xIndex = 0;
 
-    std::vector<AlignmentColumn> colunasEsperadas =  {
+    std::vector<AlignmentColumn> colunasEsperadas = {
         colunaAlinhamentoA,
         colunaAlinhamentoB
     };
@@ -209,7 +203,7 @@ TEST(NeedlemanWunschAligner, ExemplosTemColunasValidasECustoRecalculadoIgual) {
 
     for (std::size_t exemplo = 0; exemplo < problems.size(); ++exemplo) {
         SCOPED_TRACE("exemplo " + std::to_string(exemplo));
-        const StringProblem& problem = problems[exemplo];
+        const StringProblem &problem = problems[exemplo];
 
         const Alignment result = aligner.align(problem);
 
@@ -219,7 +213,6 @@ TEST(NeedlemanWunschAligner, ExemplosTemColunasValidasECustoRecalculadoIgual) {
 }
 
 TEST(NeedlemanWunschAligner, EmpatePrefereADiagonal) {
-
     const std::vector<AlignmentColumn> colunasEsperadas = {{0, 0}};
 
     const StringProblem problem("a", "b", 2, 1);

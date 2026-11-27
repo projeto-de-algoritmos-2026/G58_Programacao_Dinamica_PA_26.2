@@ -10,22 +10,19 @@
 #include "estrutura/nucleo/Version.hpp"
 
 namespace estrutura::terminal {
-class TerminalUI {
+    class TerminalUI {
+        const nucleo::IDiffer &differ;
+        std::istream &input;
+        std::ostream &output;
 
-	const nucleo::IDiffer& differ;
-	std::istream& input;
-	std::ostream& output;
+        void printDiff(const nucleo::TextDiff &diff) const;
 
-	void printDiff(const nucleo::TextDiff& diff) const;
+        static void printVersions(const std::vector<nucleo::Version> &versions);
 
-	static void printVersions(const std::vector<nucleo::Version>& versions);
+    public:
+        explicit TerminalUI(const nucleo::IDiffer &differ, std::istream &input, std::ostream &output);
 
-public:
-	explicit TerminalUI(const nucleo::IDiffer& differ, std::istream& input, std::ostream& output);
-
-	void run() const;
-
-};
-
-}  // namespace estrutura::terminal
+        void run() const;
+    };
+} // namespace estrutura::terminal
 #endif

@@ -7,16 +7,14 @@
 #include "estrutura/alinhamento/CostTable.hpp"
 
 namespace estrutura::alinhamento {
-class NeedlemanWunschAligner : public IAligner {
+    class NeedlemanWunschAligner : public IAligner {
+        [[nodiscard]] static CostTable fillTable(const IAlignmentProblem &problem);
 
-	[[nodiscard]] static CostTable fillTable(const IAlignmentProblem& problem);
+        [[nodiscard]] static std::vector<AlignmentColumn> traceback(const IAlignmentProblem &problem,
+                                                                    const CostTable &costTable);
 
-	[[nodiscard]] static std::vector<AlignmentColumn> traceback(const IAlignmentProblem& problem, const CostTable& costTable);
-
-public:
-	[[nodiscard]] Alignment align(const IAlignmentProblem& problem) const override;
-
-};
-
-}  // namespace estrutura::alinhamento
+    public:
+        [[nodiscard]] Alignment align(const IAlignmentProblem &problem) const override;
+    };
+} // namespace estrutura::alinhamento
 #endif
