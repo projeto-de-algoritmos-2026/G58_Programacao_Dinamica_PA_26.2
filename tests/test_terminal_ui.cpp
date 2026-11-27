@@ -124,7 +124,9 @@ TEST_F(TerminalUITest, CompararLeOsDoisArquivosEChamaODiffer) {
 
 TEST_F(TerminalUITest, LinhaMantidaComDoisEspacos) {
     TextDiff diff;
-    diff.lines = {linha(EditKind::Kept, "a", "a")};
+    diff.lines = {linha(EditKind::Kept, "a", "a"),
+        linha(EditKind::Added, "", "b")
+    };
 
     EXPECT_THAT(compararDevolvendo(diff), HasSubstr("  a\n"));
 }
@@ -165,4 +167,19 @@ TEST_F(TerminalUITest, PalavraApagadaEAdicionada) {
     diff.lines = {trocada};
 
     EXPECT_THAT(compararDevolvendo(diff), HasSubstr("~ a [-b-] {+c+}\n"));
+}
+
+TEST_F(TerminalUITest, DiffIdenticoAvausa) {
+
+    LineEdit trocada = linha(EditKind::Kept, "a b", "a b");
+    trocada.words = {
+        palavra(EditKind::Kept, "a", "a"),
+        palavra(EditKind::Kept, "b", "b"),
+        palavra(EditKind::Kept, "c", "c")
+    };
+
+    TextDiff diff;
+    diff.lines = {trocada};
+
+    EXPECT_THAT(compararDevolvendo(diff), HasSubstr("Os arquivos são iguais.\n"));
 }
