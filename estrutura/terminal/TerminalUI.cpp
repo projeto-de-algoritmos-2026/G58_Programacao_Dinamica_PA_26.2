@@ -73,6 +73,10 @@ void TerminalUI::run() const {
 	for (const nucleo::LineEdit& line : diff.lines) {
 		if (line.kind == nucleo::EditKind::Kept) {
 			output << "  " << line.beforeText << "\n";
+		} else if (line.kind == nucleo::EditKind::Removed) {
+			output << "- " << line.beforeText << "\n";
+		} else if (line.kind == nucleo::EditKind::Added) {
+			output << "+ " << line.afterText << "\n";
 		}
 	}
 }
