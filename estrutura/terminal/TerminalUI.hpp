@@ -17,6 +17,10 @@ namespace estrutura::terminal {
 
         void printDiff(const nucleo::TextDiff &diff) const;
 
+        void compare(std::istream &arguments) const;
+
+        void printHelp() const;
+
         static void printVersions(const std::vector<nucleo::Version> &versions);
 
     public:

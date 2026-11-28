@@ -50,31 +50,39 @@ namespace estrutura::terminal {
             if (command == "sair") { break; }
 
             if (command == "comparar") {
-                std::filesystem::path firstPath;
-                std::filesystem::path secondPath;
-
-                lineStream >> firstPath >> secondPath;
-
-                const std::optional<std::string> before = readFile(firstPath);
-                const std::optional<std::string> after = readFile(secondPath);
-
-                if (!before.has_value()) {
-                    output << "Não foi possível abrir o arquivo: " << firstPath << "\n";
-                } else if (!after.has_value()) {
-                    output << "Não foi possível abrir o arquivo: " << secondPath << "\n";
-                } else {
-                    printDiff(differ.diff(*before, *after));
-                }
+                compare(lineStream);
             } else if (command == "") {
                 // linha vazia não faz nada
             } else if (command == "ajuda") {
-                output << "comparar <a> <b>	compara os arquivos a e b\n"
-                        << "ajuda						esta lista\n"
-                        << "sair						encerra\n";
+                printHelp();
             } else {
                 output << "Comando desconhecido.\n";
             }
         }
+    }
+
+    void TerminalUI::compare(std::istream &arguments) const {
+        std::filesystem::path firstPath;
+        std::filesystem::path secondPath;
+
+        arguments >> firstPath >> secondPath;
+
+        const std::optional<std::string> before = readFile(firstPath);
+        const std::optional<std::string> after = readFile(secondPath);
+
+        if (!before.has_value()) {
+            output << "Não foi possível abrir o arquivo: " << firstPath << "\n";
+        } else if (!after.has_value()) {
+            output << "Não foi possível abrir o arquivo: " << secondPath << "\n";
+        } else {
+            printDiff(differ.diff(*before, *after));
+        }
+    }
+
+    void TerminalUI::printHelp() const {
+        output << "comparar <a> <b>	compara os arquivos a e b\n"
+        << "ajuda						esta lista\n"
+        << "sair						encerra\n";
     }
 
     void TerminalUI::printDiff(const nucleo::TextDiff &diff) const {
