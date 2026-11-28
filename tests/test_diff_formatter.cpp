@@ -37,3 +37,11 @@ TEST(DiffFormatter, ApagadaComMenosEAdicionadaComMais) {
 
     EXPECT_EQ(DiffFormatter::format(diff), "  a\n- b\n+ c\n");
 }
+
+TEST(DiffFormatter, LinhaMantidaComDoisEspaços) {
+    TextDiff diff;
+    diff.lines = {linha(EditKind::Kept, "a", "a"),
+                    linha(EditKind::Added, "", "b")};
+
+    EXPECT_EQ(DiffFormatter::format(diff), "  a\n+ b\n");
+}
