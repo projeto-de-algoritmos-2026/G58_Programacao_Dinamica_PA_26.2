@@ -20,14 +20,17 @@ namespace estrutura::terminal {
         }
 
         std::string formatWord(const nucleo::WordEdit &word) {
-            if (word.kind == nucleo::EditKind::Kept) {
-                return word.before;
-            } else if (word.kind == nucleo::EditKind::Changed) {
-                return "[-" + word.before + "-]{+" + word.after + "+}";
-            } else if (word.kind == nucleo::EditKind::Removed) {
-                return "[-" + word.before + "-]";
+            switch (word.kind) {
+                case nucleo::EditKind::Kept:
+                    return word.before;
+                case nucleo::EditKind::Changed:
+                    return "[-" + word.before + "-]{+" + word.after + "+}";
+                case nucleo::EditKind::Removed:
+                    return "[-" + word.before + "-]";
+                case nucleo::EditKind::Added:
+                    return "{+" + word.after + "+}";
             }
-            return "{+" + word.after + "+}";
+            return "";
         }
     }
 
@@ -81,23 +84,29 @@ namespace estrutura::terminal {
         }
 
         for (const nucleo::LineEdit &line: diff.lines) {
-            if (line.kind == nucleo::EditKind::Kept) {
-                output << "  " << line.beforeText << "\n";
-            } else if (line.kind == nucleo::EditKind::Removed) {
-                output << "- " << line.beforeText << "\n";
-            } else if (line.kind == nucleo::EditKind::Added) {
-                output << "+ " << line.afterText << "\n";
-            } else if (line.kind == nucleo::EditKind::Changed) {
-                output << "~ ";
-                bool firstWord = true;
-                for (const nucleo::WordEdit &word: line.words) {
-                    if (!firstWord) {
-                        output << " ";
+            switch (line.kind) {
+                case nucleo::EditKind::Kept:
+                    output << "  " << line.beforeText << "\n";
+                    break;
+                case nucleo::EditKind::Removed:
+                    output << "- " << line.beforeText << "\n";
+                    break;
+                case nucleo::EditKind::Added:
+                    output << "+ " << line.afterText << "\n";
+                    break;
+                case nucleo::EditKind::Changed: {
+                    output << "~ ";
+                    bool firstWord = true;
+                    for (const nucleo::WordEdit &word: line.words) {
+                        if (!firstWord) {
+                            output << " ";
+                        }
+                        output << formatWord(word);
+                        firstWord = false;
                     }
-                    output << formatWord(word);
-                    firstWord = false;
+                    output << "\n";
+                    break;
                 }
-                output << "\n";
             }
         }
     }
